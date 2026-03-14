@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.env
+*.json
+!package.json
+!railway.json
+!vite.config.js
+!nixpacks.toml
+backend/static/
+backend/__pycache__/
+backend/services/__pycache__/
+backend/routers/__pycache__/
+gee-monitor-*.json
