@@ -1,28 +1,8 @@
 import { useRef, useEffect, useState, useCallback } from "react";
 import { useLanguage } from "../i18n/LanguageContext";
 import { FiCpu, FiZap, FiSun, FiCamera, FiThermometer, FiDroplet, FiCheckCircle, FiAlertCircle, FiClock, FiArrowLeft, FiArrowRight, FiUploadCloud, FiPlay, FiRepeat, FiExternalLink, FiChevronDown, FiChevronUp, FiBook, FiGrid, FiWifi } from "react-icons/fi";
+import FadeSection from "./FadeSection";
 import "./SnakeRobotView.css";
-
-/* ── Scroll-triggered fade-in ── */
-function useFadeIn() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { el.classList.add("visible"); obs.unobserve(el); } },
-      { threshold: 0.12 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return ref;
-}
-
-function FadeSection({ children, className = "", ...props }) {
-  const ref = useFadeIn();
-  return <section ref={ref} className={`fade-section ${className}`} {...props}>{children}</section>;
-}
 
 /* ── Data ── */
 const SPECS = [

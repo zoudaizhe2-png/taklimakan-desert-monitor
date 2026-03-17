@@ -12,6 +12,22 @@
 .dh-stat strong { font-size:28px; font-weight:800; color:#91cf60; }
 .dh-stat span { font-size:11px; color:#6a7a8a; text-transform:uppercase; letter-spacing:.5px; margin-top:2px; }
 
+/* ── Funding Goal Bar ── */
+.funding-goal-section { padding:32px 40px; background:#0d1117; }
+.funding-bar-wrap { max-width:900px; margin:0 auto; }
+.funding-bar-track { position:relative; height:18px; background:#1a2535; border-radius:9px; overflow:visible; margin-bottom:28px; }
+.funding-bar-fill { height:100%; border-radius:9px; background:linear-gradient(90deg, #4fc3f7, #66bb6a); transition:width 1.2s cubic-bezier(.22,1,.36,1); }
+.funding-milestone { position:absolute; top:-6px; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; }
+.funding-milestone-dot { width:10px; height:10px; border-radius:50%; background:#2a3a4a; border:2px solid #1a2535; z-index:1; }
+.funding-milestone.reached .funding-milestone-dot { background:#66bb6a; border-color:#66bb6a; }
+.funding-milestone-label { font-size:9px; color:#5a6a7a; margin-top:18px; white-space:nowrap; }
+.funding-milestone-amt { font-size:8px; color:#3a4a5a; }
+.funding-stats { display:flex; justify-content:center; gap:28px; font-size:13px; }
+.funding-raised { color:#8a9aaa; }
+.funding-raised strong { color:#91cf60; font-weight:700; }
+.funding-pct { color:#4fc3f7; font-weight:700; }
+.funding-donors { color:#6a7a8a; }
+
 /* Live feed section */
 .donate-feed-section { padding:40px; }
 .donate-feed-section h2 { font-size:20px; color:#e0e8f0; margin:0 0 6px; display:flex; align-items:center; gap:8px; }
@@ -42,6 +58,12 @@
 .snake-roster-status.charging { color:#FFC107; }
 .snake-roster-status.scanning { color:#4fc3f7; }
 
+/* Snake stats grid */
+.snake-stats-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:10px; padding-top:10px; border-top:1px solid #1a2535; }
+.snake-stat-item { background:#111922; border:1px solid #1a2535; border-radius:6px; padding:8px 10px; display:flex; flex-direction:column; gap:2px; }
+.snake-stat-label { font-size:9px; color:#5a6a7a; text-transform:uppercase; letter-spacing:.3px; }
+.snake-stat-value { font-size:14px; font-weight:700; color:#c0d0e0; }
+
 /* Tiers */
 .donate-tiers-section { padding:40px; background:#0d1117; }
 .donate-tiers-section h2 { font-size:20px; color:#e0e8f0; margin:0 0 24px; text-align:center; }
@@ -65,6 +87,82 @@
 .tier-btn { width:100%; padding:10px; border:none; border-radius:8px; font-size:13px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; transition:all .15s; margin-top:auto; }
 .tier-btn:hover { opacity:.9; transform:scale(1.02); }
 
+/* ── Adopt Flow ── */
+.adopt-flow-section { padding:40px; background:#0a0e14; }
+.adopt-stepper { display:flex; justify-content:center; gap:48px; margin-bottom:32px; position:relative; }
+.adopt-step-line { position:absolute; top:15px; left:30%; right:30%; height:2px; background:#1a2535; z-index:0; }
+.adopt-step-dot { display:flex; flex-direction:column; align-items:center; gap:6px; z-index:1; }
+.adopt-step-circle { width:30px; height:30px; border-radius:50%; background:#1a2535; color:#5a6a7a; font-size:12px; font-weight:700; display:flex; align-items:center; justify-content:center; border:2px solid #2a3a4a; transition:all .2s; }
+.adopt-step-dot.active .adopt-step-circle { background:#4fc3f7; color:#0b0f15; border-color:#4fc3f7; }
+.adopt-step-dot.done .adopt-step-circle { background:#66bb6a; color:#fff; border-color:#66bb6a; }
+.adopt-step-dot span { font-size:10px; color:#5a6a7a; }
+.adopt-step-dot.active span { color:#4fc3f7; }
+
+.adopt-body { max-width:700px; margin:0 auto; }
+.adopt-name-zone { display:flex; gap:24px; margin-bottom:20px; }
+.adopt-input-group { flex:1; display:flex; flex-direction:column; gap:8px; }
+.adopt-input-group label { font-size:12px; color:#8a9aaa; font-weight:600; }
+.adopt-name-input { padding:10px 14px; background:#111922; border:1px solid #2a3a4a; border-radius:8px; color:#e0e8f0; font-size:14px; outline:none; transition:border-color .15s; }
+.adopt-name-input:focus { border-color:#4fc3f7; }
+.adopt-char-count { font-size:10px; color:#5a6a7a; text-align:right; }
+.adopt-zone-group { flex:1; display:flex; flex-direction:column; gap:8px; }
+.adopt-zone-group label { font-size:12px; color:#8a9aaa; font-weight:600; }
+
+.adopt-preview { margin-bottom:20px; }
+.adopt-preview-card { background:#111922; border:2px solid #2a3a4a; border-radius:10px; padding:16px; display:flex; align-items:center; gap:14px; }
+.adopt-preview-icon { font-size:32px; }
+.adopt-preview-details { display:flex; flex-direction:column; gap:2px; }
+.adopt-preview-details strong { font-size:16px; }
+.adopt-preview-details span { font-size:11px; color:#6a7a8a; }
+.adopt-preview-tier { font-size:10px; color:#5a6a7a; }
+
+.adopt-next-btn { padding:12px 28px; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; display:flex; align-items:center; gap:6px; margin:0 auto; transition:all .15s; }
+.adopt-next-btn:disabled { opacity:.4; cursor:not-allowed; }
+.adopt-next-btn:not(:disabled):hover { transform:scale(1.03); }
+
+.adopt-confirm-card { background:#111922; border:2px solid #2a3a4a; border-radius:12px; padding:28px; max-width:440px; margin:0 auto; }
+.adopt-confirm-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; }
+.adopt-confirm-icon { font-size:36px; }
+.adopt-confirm-header h3 { margin:0; font-size:20px; }
+.adopt-confirm-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:20px; }
+.adopt-confirm-item { display:flex; flex-direction:column; gap:2px; }
+.adopt-confirm-label { font-size:10px; color:#5a6a7a; text-transform:uppercase; }
+.adopt-confirm-item span:last-child { font-size:13px; color:#c0d0e0; }
+.adopt-complete-btn { width:100%; padding:12px; border:none; border-radius:8px; font-size:14px; font-weight:700; cursor:pointer; transition:all .15s; margin-bottom:8px; }
+.adopt-complete-btn:hover { opacity:.9; transform:scale(1.02); }
+.adopt-back-btn { width:100%; padding:8px; background:none; border:1px solid #2a3a4a; border-radius:8px; color:#6a7a8a; font-size:12px; cursor:pointer; }
+.adopt-back-btn:hover { border-color:#4fc3f7; color:#4fc3f7; }
+
+.adopt-toast { position:fixed; bottom:32px; left:50%; transform:translateX(-50%); background:#1a2535; color:#4fc3f7; padding:14px 28px; border-radius:10px; font-size:14px; font-weight:600; box-shadow:0 4px 24px rgba(0,0,0,.5); z-index:9999; animation:toast-in .3s ease; }
+@keyframes toast-in { from { opacity:0; transform:translateX(-50%) translateY(20px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
+
+/* ── Donor Wall ── */
+.donor-wall-section { padding:40px; }
+.donor-wall-section h2 { font-size:20px; color:#e0e8f0; margin:0 0 24px; text-align:center; }
+.donor-wall-layout { display:flex; gap:24px; max-width:1000px; margin:0 auto; }
+
+.donor-ticker { flex:1; }
+.donor-ticker h3 { margin:0 0 12px; font-size:12px; color:#5a6a7a; text-transform:uppercase; letter-spacing:.5px; }
+.donor-ticker-list { display:flex; flex-direction:column; gap:4px; max-height:400px; overflow-y:auto; }
+.donor-ticker-item { display:flex; align-items:center; gap:10px; padding:8px 12px; background:#111922; border:1px solid #1a2535; border-radius:8px; }
+.donor-badge { width:24px; height:24px; border-radius:50%; color:#0b0f15; font-size:11px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.donor-ticker-info { display:flex; flex-direction:column; flex:1; }
+.donor-ticker-name { font-size:12px; font-weight:600; color:#c0d0e0; }
+.donor-ticker-snake { font-size:10px; color:#66bb6a; }
+.donor-ticker-time { font-size:10px; color:#5a6a7a; }
+
+.milestone-timeline { flex:1; }
+.milestone-timeline h3 { margin:0 0 12px; font-size:12px; color:#5a6a7a; text-transform:uppercase; letter-spacing:.5px; }
+.milestone-list { display:flex; flex-direction:column; gap:6px; }
+.milestone-item { display:flex; align-items:center; gap:12px; padding:10px 14px; background:#111922; border:1px solid #1a2535; border-radius:8px; }
+.milestone-icon-wrap { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.milestone-item.reached .milestone-icon-wrap { background:#66bb6a; color:#fff; }
+.milestone-item.locked .milestone-icon-wrap { background:#1a2535; color:#5a6a7a; }
+.milestone-info { display:flex; flex-direction:column; gap:1px; }
+.milestone-label { font-size:12px; color:#c0d0e0; font-weight:500; }
+.milestone-item.locked .milestone-label { color:#5a6a7a; }
+.milestone-donors { font-size:10px; color:#5a6a7a; }
+
 /* How it works */
 .donate-how { padding:40px; text-align:center; }
 .donate-how h2 { font-size:20px; color:#e0e8f0; margin:0 0 28px; }
@@ -77,12 +175,52 @@
 /* Impact */
 .donate-impact { padding:40px; background:#0d1117; text-align:center; }
 .donate-impact h2 { font-size:20px; color:#e0e8f0; margin:0 0 24px; }
+.donate-sat-ba { max-width:700px; margin:0 auto 28px; }
+.donate-sat-caption { font-size:12px; color:#6a7a8a; margin:12px 0 0; font-style:italic; }
 .impact-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; max-width:900px; margin:0 auto; }
 .impact-card { background:#111922; border:1px solid #1a2535; border-radius:10px; padding:20px 12px; display:flex; flex-direction:column; align-items:center; gap:6px; }
 .impact-icon { font-size:28px; }
 .impact-card strong { font-size:24px; font-weight:800; color:#91cf60; }
 .impact-card span { font-size:11px; color:#6a7a8a; line-height:1.4; }
 
+/* ── Allocation Chart ── */
+.allocation-section { padding:40px; text-align:center; }
+.allocation-section h2 { font-size:20px; color:#e0e8f0; margin:0 0 28px; }
+.allocation-layout { display:flex; align-items:center; justify-content:center; gap:40px; }
+.allocation-donut { flex-shrink:0; }
+.allocation-legend { display:flex; flex-direction:column; gap:10px; }
+.allocation-legend-row { display:flex; align-items:center; gap:10px; }
+.allocation-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+.allocation-label { font-size:13px; color:#c0d0e0; min-width:140px; text-align:left; }
+.allocation-pct { font-size:13px; color:#6a7a8a; font-weight:700; }
+
+/* ── FAQ ── */
+.faq-section { padding:40px; background:#0d1117; }
+.faq-section h2 { font-size:20px; color:#e0e8f0; margin:0 0 24px; text-align:center; }
+.faq-list { max-width:700px; margin:0 auto; display:flex; flex-direction:column; gap:6px; }
+.faq-item { background:#111922; border:1px solid #1a2535; border-radius:10px; overflow:hidden; }
+.faq-item.open { border-color:#2a3a4a; }
+.faq-question { width:100%; padding:14px 18px; background:none; border:none; color:#c0d0e0; font-size:13px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:space-between; gap:12px; text-align:left; }
+.faq-question:hover { color:#4fc3f7; }
+.faq-answer { overflow:hidden; transition:max-height .3s ease; }
+.faq-answer p { padding:0 18px 14px; margin:0; font-size:12px; color:#8a9aaa; line-height:1.6; }
+
+/* ── Share ── */
+.share-section { padding:40px; text-align:center; }
+.share-section h2 { font-size:20px; color:#e0e8f0; margin:0 0 6px; }
+.share-desc { color:#6a7a8a; font-size:13px; margin:0 0 20px; }
+.share-buttons { display:flex; justify-content:center; gap:12px; }
+.share-btn { width:44px; height:44px; border-radius:50%; background:#111922; border:1px solid #2a3a4a; color:#8a9aaa; font-size:16px; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .15s; }
+.share-btn:hover { color:#4fc3f7; border-color:#4fc3f7; }
+.share-copied { display:block; margin-top:8px; font-size:11px; color:#66bb6a; }
+
+/* ── Zone Select Map ── */
+.zone-select-map { background:#0a0e14; border:1px solid #1a2535; border-radius:8px; padding:4px; }
+
+/* ── Pulse animation ── */
+@keyframes pulse-dot { 0%,100% { opacity:1; } 50% { opacity:.3; } }
+
+/* ── Responsive ── */
 @media (max-width: 900px) {
   .donate-tiers { grid-template-columns:1fr 1fr; }
   .donate-steps { flex-direction:column; }
@@ -90,4 +228,15 @@
   .donate-feed-layout { flex-direction:column; }
   .donate-hero { padding:40px 20px; }
   .donate-hero h1 { font-size:24px; }
+  .donor-wall-layout { flex-direction:column; }
+  .allocation-layout { flex-direction:column; }
+  .adopt-name-zone { flex-direction:column; }
+  .adopt-confirm-grid { grid-template-columns:1fr; }
+  .funding-milestone-label { font-size:7px; }
+}
+
+@media (max-width: 600px) {
+  .donate-tiers { grid-template-columns:1fr; }
+  .impact-grid { grid-template-columns:1fr; }
+  .adopt-stepper { gap:24px; }
 }

@@ -1,29 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import { useLanguage } from "../i18n/LanguageContext";
 import { FiExternalLink, FiArrowRight } from "react-icons/fi";
 import { NEWS_ARTICLES, CATEGORIES, LAST_UPDATED } from "../data/news-data";
+import FadeSection from "./FadeSection";
 import "./NewsView.css";
-
-/* ── Scroll-triggered fade-in (same pattern as MissionView) ── */
-function useFadeIn() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { el.classList.add("visible"); obs.unobserve(el); } },
-      { threshold: 0.12 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return ref;
-}
-
-function FadeSection({ children, className = "" }) {
-  const ref = useFadeIn();
-  return <section ref={ref} className={`fade-section ${className}`}>{children}</section>;
-}
 
 /* ── Category helpers ── */
 const CAT_COLORS = Object.fromEntries(CATEGORIES.map((c) => [c.id, c.color]));

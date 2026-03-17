@@ -1,6 +1,13 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLanguage } from "../i18n/LanguageContext";
-import { FiHeart, FiEye, FiMapPin, FiAward, FiChevronRight, FiPlay, FiPause, FiMaximize2 } from "react-icons/fi";
+import { FiHeart, FiEye, FiMapPin, FiAward, FiChevronRight, FiPlay, FiPause, FiMaximize2, FiShare2, FiCopy, FiCheck } from "react-icons/fi";
+import FadeSection from "./FadeSection";
+import FundingGoalBar from "./donate/FundingGoalBar";
+import AllocationChart from "./donate/AllocationChart";
+import DonorWall from "./donate/DonorWall";
+import AdoptFlow from "./donate/AdoptFlow";
+import DonationFAQ from "./donate/DonationFAQ";
+import { SatelliteBeforeAfter } from "./SatellitePhoto";
 import "./DonateView.css";
 
 // ─── TIERS ────────────────────────────────────────
@@ -44,11 +51,11 @@ const TIERS = [
 // ─── SNAKE ROSTER (simulated adopted snakes) ─────
 
 const SNAKES = [
-  { id: "EXP-07", name: "Explorer-7", zone: "Hotan Green Belt", km: 1247, status: "patrolling", donor: "Zhang W.", color: "#4fc3f7" },
-  { id: "DUN-12", name: "Dune Runner", zone: "Desert Highway", km: 893, status: "charging", donor: "Sarah K.", color: "#66bb6a" },
-  { id: "OAS-03", name: "Oasis Watch", zone: "Korla Oasis", km: 2104, status: "patrolling", donor: "Li M.", color: "#FFC107" },
-  { id: "SDW-19", name: "Sandwalker", zone: "Minfeng Belt", km: 567, status: "patrolling", donor: "Anonymous", color: "#E040FB" },
-  { id: "GRN-05", name: "Green Scout", zone: "Alar Shelterbelt", km: 1532, status: "scanning", donor: "David R.", color: "#4fc3f7" },
+  { id: "EXP-07", name: "Explorer-7", zone: "Hotan Green Belt", km: 1247, status: "patrolling", donor: "Zhang W.", color: "#4fc3f7", battery: 87, lastScan: "2 min ago", lastScan_zh: "2分钟前", treesInspected: 342, distanceToday: 4.7 },
+  { id: "DUN-12", name: "Dune Runner", zone: "Desert Highway", km: 893, status: "charging", donor: "Sarah K.", color: "#66bb6a", battery: 23, lastScan: "18 min ago", lastScan_zh: "18分钟前", treesInspected: 189, distanceToday: 1.2 },
+  { id: "OAS-03", name: "Oasis Watch", zone: "Korla Oasis", km: 2104, status: "patrolling", donor: "Li M.", color: "#FFC107", battery: 64, lastScan: "5 min ago", lastScan_zh: "5分钟前", treesInspected: 578, distanceToday: 6.3 },
+  { id: "SDW-19", name: "Sandwalker", zone: "Minfeng Belt", km: 567, status: "patrolling", donor: "Anonymous", color: "#E040FB", battery: 91, lastScan: "1 min ago", lastScan_zh: "1分钟前", treesInspected: 124, distanceToday: 3.8 },
+  { id: "GRN-05", name: "Green Scout", zone: "Alar Shelterbelt", km: 1532, status: "scanning", donor: "David R.", color: "#4fc3f7", battery: 56, lastScan: "8 min ago", lastScan_zh: "8分钟前", treesInspected: 431, distanceToday: 5.1 },
 ];
 
 // ─── SIMULATED LIVE FEED ─────────────────────────
@@ -58,7 +65,6 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
   const frameRef = useRef(0);
   const [playing, setPlaying] = useState(true);
 
-  // Simulate desert POV footage on canvas
   useEffect(() => {
     if (!canvasRef.current || !playing) return;
     const ctx = canvasRef.current.getContext("2d");
@@ -70,7 +76,6 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
       frameRef.current += 0.5;
       const t = frameRef.current;
 
-      // Sky gradient
       const skyGrad = ctx.createLinearGradient(0, 0, 0, h * 0.45);
       skyGrad.addColorStop(0, "#1a237e");
       skyGrad.addColorStop(0.5, "#4a6fa5");
@@ -78,11 +83,9 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
       ctx.fillStyle = skyGrad;
       ctx.fillRect(0, 0, w, h * 0.45);
 
-      // Horizon glow
       ctx.fillStyle = "rgba(255,200,100,0.15)";
       ctx.fillRect(0, h * 0.38, w, h * 0.1);
 
-      // Desert ground
       const groundGrad = ctx.createLinearGradient(0, h * 0.45, 0, h);
       groundGrad.addColorStop(0, "#D4A843");
       groundGrad.addColorStop(0.3, "#C89B3C");
@@ -90,7 +93,6 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
       ctx.fillStyle = groundGrad;
       ctx.fillRect(0, h * 0.45, w, h * 0.55);
 
-      // Moving dune lines
       ctx.strokeStyle = "rgba(139,105,20,0.3)";
       ctx.lineWidth = 1;
       for (let i = 0; i < 8; i++) {
@@ -103,7 +105,6 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
         ctx.stroke();
       }
 
-      // Occasional green patches (vegetation detected)
       if (snake.status === "patrolling") {
         const greenX = ((t * 3) % (w + 200)) - 100;
         if (greenX > 0 && greenX < w) {
@@ -111,7 +112,6 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
           ctx.beginPath();
           ctx.ellipse(greenX, h * 0.6, 30, 8, 0, 0, Math.PI * 2);
           ctx.fill();
-          // Small tree shapes
           for (let j = -1; j <= 1; j++) {
             ctx.fillStyle = "#2E7D32";
             ctx.beginPath();
@@ -123,12 +123,10 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
         }
       }
 
-      // Scan line effect
       const scanY = (t * 4) % h;
       ctx.fillStyle = "rgba(79,195,247,0.04)";
       ctx.fillRect(0, scanY, w, 2);
 
-      // HUD overlay
       ctx.fillStyle = "rgba(0,0,0,0.5)";
       ctx.fillRect(0, 0, w, 28);
       ctx.fillRect(0, h - 24, w, 24);
@@ -146,17 +144,12 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
       const now = new Date();
       ctx.fillText(`${now.getHours().toString().padStart(2, "0")}:${now.getMinutes().toString().padStart(2, "0")}:${now.getSeconds().toString().padStart(2, "0")} UTC+8  |  ${snake.zone}  |  ${(snake.km + Math.floor(t / 60)).toLocaleString()} km total`, 8, h - 8);
 
-      // Corner brackets
       ctx.strokeStyle = "rgba(79,195,247,0.4)";
       ctx.lineWidth = 1.5;
       const m = 12, s = 20;
-      // top-left
       ctx.beginPath(); ctx.moveTo(m, m + s); ctx.lineTo(m, m); ctx.lineTo(m + s, m); ctx.stroke();
-      // top-right
       ctx.beginPath(); ctx.moveTo(w - m - s, m); ctx.lineTo(w - m, m); ctx.lineTo(w - m, m + s); ctx.stroke();
-      // bottom-left
       ctx.beginPath(); ctx.moveTo(m, h - m - s); ctx.lineTo(m, h - m); ctx.lineTo(m + s, h - m); ctx.stroke();
-      // bottom-right
       ctx.beginPath(); ctx.moveTo(w - m - s, h - m); ctx.lineTo(w - m, h - m); ctx.lineTo(w - m, h - m - s); ctx.stroke();
 
       raf = requestAnimationFrame(draw);
@@ -184,15 +177,55 @@ function SnakeLiveFeed({ snake, expanded, onToggleExpand }) {
   );
 }
 
+// ─── SHARE BUTTONS ───────────────────────────────
+
+function ShareButtons({ zh }) {
+  const [copied, setCopied] = useState(false);
+  const url = typeof window !== "undefined" ? window.location.href : "";
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(url).then(() => {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    });
+  };
+
+  const tweetText = encodeURIComponent(zh
+    ? "我正在支持塔克拉玛干沙漠绿化工程！认领一条巡逻蛇形机器人 🐍🌿"
+    : "I'm supporting the Taklimakan Desert greening mission! Adopt a patrol snake robot 🐍🌿"
+  );
+
+  return (
+    <FadeSection className="share-section">
+      <h2>{zh ? "分享这个项目" : "Share This Mission"}</h2>
+      <p className="share-desc">{zh ? "帮助我们传播消息" : "Help spread the word"}</p>
+      <div className="share-buttons">
+        <button
+          className="share-btn"
+          onClick={() => window.open(`https://twitter.com/intent/tweet?text=${tweetText}&url=${encodeURIComponent(url)}`, "_blank", "width=550,height=420")}
+          title="Twitter / X"
+        >
+          𝕏
+        </button>
+        <button className="share-btn" onClick={handleCopy} title={zh ? "复制链接" : "Copy link"}>
+          {copied ? <FiCheck size={16} /> : <FiCopy size={16} />}
+        </button>
+      </div>
+      {copied && <span className="share-copied">{zh ? "已复制！" : "Copied!"}</span>}
+    </FadeSection>
+  );
+}
+
 // ─── MAIN DONATE VIEW ────────────────────────────
 
 export default function DonateView() {
   const { lang } = useLanguage();
   const [selectedTier, setSelectedTier] = useState(null);
-  const [adoptStep, setAdoptStep] = useState(0); // 0=tiers, 1=name snake, 2=feed
+  const [adoptStep, setAdoptStep] = useState(0);
   const [snakeName, setSnakeName] = useState("");
   const [selectedSnake, setSelectedSnake] = useState(SNAKES[0]);
   const [feedExpanded, setFeedExpanded] = useState(false);
+  const adoptRef = useRef(null);
 
   const zh = lang === "zh";
 
@@ -220,6 +253,12 @@ export default function DonateView() {
     lifetimeAccess: zh ? "终身访问" : "Lifetime access",
   };
 
+  const handleTierSelect = (tierId) => {
+    setSelectedTier(tierId);
+    setAdoptStep(1);
+    setTimeout(() => adoptRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 100);
+  };
+
   return (
     <div className="donate-view">
       {/* Hero */}
@@ -238,8 +277,11 @@ export default function DonateView() {
         </div>
       </div>
 
+      {/* Funding Goal Progress Bar */}
+      <FundingGoalBar zh={zh} />
+
       {/* Live feed showcase */}
-      <div className="donate-feed-section">
+      <FadeSection className="donate-feed-section">
         <h2><FiEye size={18} /> {zh ? "实时巡逻画面" : "Live Patrol Feed"}</h2>
         <p className="donate-feed-desc">{zh ? "从我们的蛇形机器人视角实时观察沙漠" : "Watch the desert in real-time through our snake robots' eyes"}</p>
 
@@ -262,12 +304,32 @@ export default function DonateView() {
                 <span className={`snake-roster-status ${s.status}`}>{s.status === "patrolling" ? "●" : s.status === "charging" ? "⚡" : "◎"}</span>
               </button>
             ))}
+
+            {/* Expanded snake stats */}
+            <div className="snake-stats-grid">
+              <div className="snake-stat-item">
+                <span className="snake-stat-label">{zh ? "电量" : "Battery"}</span>
+                <span className="snake-stat-value" style={{ color: selectedSnake.battery > 50 ? "#66bb6a" : "#FFC107" }}>{selectedSnake.battery}%</span>
+              </div>
+              <div className="snake-stat-item">
+                <span className="snake-stat-label">{zh ? "上次扫描" : "Last Scan"}</span>
+                <span className="snake-stat-value">{zh ? selectedSnake.lastScan_zh : selectedSnake.lastScan}</span>
+              </div>
+              <div className="snake-stat-item">
+                <span className="snake-stat-label">{zh ? "检测树木" : "Trees"}</span>
+                <span className="snake-stat-value">{selectedSnake.treesInspected}</span>
+              </div>
+              <div className="snake-stat-item">
+                <span className="snake-stat-label">{zh ? "今日里程" : "Today"}</span>
+                <span className="snake-stat-value">{selectedSnake.distanceToday} km</span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </FadeSection>
 
       {/* Tiers */}
-      <div className="donate-tiers-section">
+      <FadeSection className="donate-tiers-section">
         <h2>{zh ? "选择你的支持方式" : "Choose Your Support"}</h2>
 
         <div className="donate-tiers">
@@ -275,7 +337,7 @@ export default function DonateView() {
             <div
               key={tier.id}
               className={`donate-tier ${tier.featured ? "featured" : ""} ${selectedTier === tier.id ? "selected" : ""}`}
-              onClick={() => setSelectedTier(tier.id)}
+              onClick={() => handleTierSelect(tier.id)}
             >
               {tier.featured && <div className="tier-badge">{zh ? "最受欢迎" : "MOST POPULAR"}</div>}
               <div className="tier-icon">{tier.icon}</div>
@@ -297,10 +359,27 @@ export default function DonateView() {
             </div>
           ))}
         </div>
+      </FadeSection>
+
+      {/* Adopt Flow */}
+      <div ref={adoptRef}>
+        <AdoptFlow
+          adoptStep={adoptStep}
+          setAdoptStep={setAdoptStep}
+          selectedTier={selectedTier}
+          snakeName={snakeName}
+          setSnakeName={setSnakeName}
+          zh={zh}
+          tiers={TIERS}
+          tierLabels={tierLabels}
+        />
       </div>
 
+      {/* Donor Wall + Milestones */}
+      <DonorWall zh={zh} />
+
       {/* How it works */}
-      <div className="donate-how">
+      <FadeSection className="donate-how">
         <h2>{zh ? "如何运作" : "How It Works"}</h2>
         <div className="donate-steps">
           <div className="donate-step">
@@ -324,11 +403,27 @@ export default function DonateView() {
             <p>{zh ? "接收巡逻报告，追踪绿化进展" : "Get patrol reports and track greening progress"}</p>
           </div>
         </div>
-      </div>
+      </FadeSection>
 
-      {/* Impact numbers */}
-      <div className="donate-impact">
+      {/* Satellite Before/After + Impact */}
+      <FadeSection className="donate-impact">
         <h2>{zh ? "你的捐赠影响" : "Your Donation Impact"}</h2>
+
+        <div className="donate-sat-ba">
+          <SatelliteBeforeAfter
+            bounds={[79.5, 36.8, 80.5, 37.5]}
+            yearBefore={2017}
+            yearAfter={2024}
+            band="ndvi"
+            width={700}
+          />
+          <p className="donate-sat-caption">
+            {zh
+              ? "你的捐赠帮助将沙漠变成绿洲 — 和田地区，2017 vs 2024"
+              : "Your donations help turn sand into green — Hotan region, 2017 vs 2024"}
+          </p>
+        </div>
+
         <div className="impact-grid">
           <div className="impact-card">
             <span className="impact-icon">🌱</span>
@@ -351,7 +446,16 @@ export default function DonateView() {
             <span>{zh ? "= 一个月卫星监测数据" : "= one month of satellite monitoring data"}</span>
           </div>
         </div>
-      </div>
+      </FadeSection>
+
+      {/* Fund Allocation */}
+      <AllocationChart zh={zh} />
+
+      {/* FAQ */}
+      <DonationFAQ zh={zh} />
+
+      {/* Share */}
+      <ShareButtons zh={zh} />
     </div>
   );
 }

@@ -1,29 +1,9 @@
-import { useRef, useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { useLanguage } from "../i18n/LanguageContext";
 import { DESERT_OUTLINE, GREEN_BELT_SEGMENTS, RIVERS } from "../data/mapShapes";
 import { FiMapPin, FiCalendar, FiCamera, FiThermometer, FiWind, FiDroplet, FiCheckSquare, FiPackage, FiTruck, FiSun, FiArrowRight, FiZoomIn, FiRadio, FiCpu, FiUser, FiNavigation } from "react-icons/fi";
+import FadeSection from "./FadeSection";
 import "./GroundResearchView.css";
-
-/* ── Scroll-triggered fade-in ── */
-function useFadeIn() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { el.classList.add("visible"); obs.unobserve(el); } },
-      { threshold: 0.12 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, []);
-  return ref;
-}
-
-function FadeSection({ children, className = "" }) {
-  const ref = useFadeIn();
-  return <section ref={ref} className={`gr-fade ${className}`}>{children}</section>;
-}
 
 /* ── SVG projection ── */
 const BOUNDS = { minLng: 76, maxLng: 89, minLat: 36, maxLat: 42.5 };
