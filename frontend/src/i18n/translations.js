@@ -168,8 +168,10 @@ export const translations = {
     sat_highway: "Desert Highway",
     sat_minfeng: "Minfeng Shelterbelt",
     // Views
+    sidebarMain: "MAIN",
+    sidebarMore: "MORE",
     viewMonitor: "Monitor",
-    viewMission: "Mission",
+    viewHome: "Home",
     viewSnake: "Snake Robot",
     viewDonate: "Donate",
     viewPlayground: "Satellite Lab",
@@ -361,8 +363,10 @@ export const translations = {
     sat_highway: "沙漠公路",
     sat_minfeng: "民丰防护林",
     // Views
+    sidebarMain: "主要",
+    sidebarMore: "更多",
     viewMonitor: "监测",
-    viewMission: "使命",
+    viewHome: "首页",
     viewSnake: "蛇形机器人",
     viewDonate: "捐赠",
     viewPlayground: "\u536B\u661F\u5B9E\u9A8C\u5BA4",

@@ -63,11 +63,29 @@
   flex-shrink: 0;
 }
 
+.header-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
 .header-left h1 {
   margin: 0;
   font-size: 20px;
   color: #91cf60;
   font-weight: 700;
+}
+
+.header-breadcrumb-sep {
+  color: #3a3a5a;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.header-breadcrumb-page {
+  color: var(--text-secondary);
+  font-size: 15px;
+  font-weight: 500;
 }
 
 .subtitle {
@@ -76,11 +94,65 @@
   color: var(--text-secondary);
 }
 
-/* ===== Language Toggle ===== */
+/* ===== Header Right ===== */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-source-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-transform: uppercase;
+}
+
+.header-source-badge.live {
+  background: rgba(26, 152, 80, 0.15);
+  color: #1a9850;
+}
+
+.header-source-badge.demo {
+  background: rgba(252, 141, 89, 0.15);
+  color: #fc8d59;
+}
+
+.header-source-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+
+.header-source-badge.live .header-source-dot {
+  background: #1a9850;
+  box-shadow: 0 0 4px #1a9850;
+}
+
+.header-source-badge.demo .header-source-dot {
+  background: #fc8d59;
+  box-shadow: 0 0 4px #fc8d59;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ===== Language Toggle (segmented pill) ===== */
 .lang-toggle {
   display: flex;
   align-items: center;
-  gap: 4px;
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 2px;
+  gap: 0;
 }
 
 .lang-toggle button {
@@ -88,25 +160,21 @@
   border: none;
   color: var(--text-secondary);
   cursor: pointer;
-  font-size: 13px;
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 6px;
   transition: all 0.2s;
+  font-weight: 500;
 }
 
 .lang-toggle button.active {
   color: #91cf60;
-  background: rgba(145, 207, 96, 0.1);
+  background: rgba(145, 207, 96, 0.15);
   font-weight: 600;
 }
 
-.lang-toggle button:hover {
+.lang-toggle button:hover:not(.active) {
   color: #ccc;
-}
-
-.lang-divider {
-  color: #3a3a5a;
-  font-size: 14px;
 }
 
 /* ===== Error Banner ===== */

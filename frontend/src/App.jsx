@@ -26,6 +26,7 @@ import SatellitePhoto from "./components/SatellitePhoto";
 import Timeline from "./components/Timeline";
 import { FiRadio } from "react-icons/fi";
 import { useLanguage } from "./i18n/LanguageContext";
+import { fetchDataSource } from "./api/client";
 import useMapState from "./hooks/useMapState";
 import useDashboard from "./hooks/useDashboard";
 import "./App.css";
@@ -35,11 +36,16 @@ function App() {
   const { t } = useLanguage();
   const panelRef = useRef(null);
 
-  const [activeView, setActiveView] = useState("map");
+  const [activeView, setActiveView] = useState("home");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [error, setError] = useState(null);
+  const [dataSource, setDataSource] = useState(null);
 
   const { dashboardData } = useDashboard();
+
+  useEffect(() => {
+    fetchDataSource().then(setDataSource).catch(() => {});
+  }, []);
 
   const {
     filteredFeatures,
@@ -82,10 +88,20 @@ function App() {
     <div className={`app ${isFullscreen ? "fullscreen" : ""}`}>
       <header className="app-header">
         <div className="header-left">
-          <h1>{t("appTitle")}</h1>
+          <div className="header-title-row">
+            <h1>{t("appTitle")}</h1>
+            <span className="header-breadcrumb-sep">/</span>
+            <span className="header-breadcrumb-page">{t(`view${activeView.charAt(0).toUpperCase() + activeView.slice(1)}`)}</span>
+          </div>
           <p className="subtitle">{t("appSubtitle")}</p>
         </div>
-        <LanguageToggle />
+        <div className="header-right">
+          <div className={`header-source-badge ${dataSource?.source === "gee" ? "live" : "demo"}`}>
+            <span className="header-source-dot" />
+            {dataSource?.source === "gee" ? "LIVE" : "Demo"}
+          </div>
+          <LanguageToggle />
+        </div>
       </header>
 
       {error && <div className="error-banner">{error} <button className="error-dismiss" onClick={() => setError(null)}>✕</button></div>}
@@ -145,8 +161,8 @@ function App() {
             <TimelineView onNavigateToProject={() => setActiveView("map")} />
           </div>
 
-          {/* ===== MISSION ===== */}
-          <div className={`view-panel ${activeView === "mission" ? "active" : ""}`}>
+          {/* ===== HOME ===== */}
+          <div className={`view-panel ${activeView === "home" ? "active" : ""}`}>
             <MissionView onNavigate={setActiveView} />
           </div>
 

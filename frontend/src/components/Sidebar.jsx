@@ -1,15 +1,15 @@
 import { useLanguage } from "../i18n/LanguageContext";
-import { FiMap, FiActivity, FiFolder, FiClock, FiHeart, FiGift, FiGlobe, FiFileText, FiSun, FiCompass } from "react-icons/fi";
+import { FiMap, FiActivity, FiFolder, FiClock, FiHome, FiGift, FiGlobe, FiFileText, FiSun, FiCompass } from "react-icons/fi";
 import SnakeIcon from "./icons/SnakeIcon";
 import "./Sidebar.css";
 
 const MAIN_VIEWS = [
-  { id: "mission", icon: FiHeart, labelKey: "viewMission" },
+  { id: "home", icon: FiHome, labelKey: "viewHome" },
   { id: "map", icon: FiMap, labelKey: "viewMap" },
   { id: "monitor", icon: FiActivity, labelKey: "viewMonitor" },
-  { id: "playground", icon: FiGlobe, labelKey: "viewPlayground" },
-  { id: "research", icon: FiCompass, labelKey: "viewResearch" },
   { id: "projects", icon: FiFolder, labelKey: "viewProjects" },
+  { id: "research", icon: FiCompass, labelKey: "viewResearch" },
+  { id: "playground", icon: FiGlobe, labelKey: "viewPlayground" },
   { id: "snake", icon: SnakeIcon, labelKey: "viewSnake" },
 ];
 
@@ -41,8 +41,9 @@ export default function Sidebar({ activeView, onViewChange }) {
       <div className="sidebar-brand">
         <FiSun size={16} />
       </div>
+      <span className="sidebar-label">{t("sidebarMain")}</span>
       {MAIN_VIEWS.map(renderButton)}
-      <div className="sidebar-divider" />
+      <span className="sidebar-label">{t("sidebarMore")}</span>
       {SECONDARY_VIEWS.map(renderButton)}
       <div className="sidebar-spacer" />
     </nav>

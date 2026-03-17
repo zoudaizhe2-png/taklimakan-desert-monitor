@@ -10,7 +10,6 @@ export default function LanguageToggle() {
       >
         EN
       </button>
-      <span className="lang-divider">|</span>
       <button
         className={lang === "zh" ? "active" : ""}
         onClick={() => setLang("zh")}
