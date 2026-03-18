@@ -1,5 +1,6 @@
 /* ===== Design Tokens ===== */
-:root {
+:root,
+[data-theme="dark"] {
   /* Colors — surfaces */
   --bg-primary: #0d1117;
   --bg-secondary: #111922;
@@ -37,6 +38,37 @@
   /* Typography */
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Fira Code", monospace;
+
+  /* Skeleton shimmer */
+  --shimmer-highlight: #1a2535;
+}
+
+[data-theme="light"] {
+  --bg-primary: #f5f7fa;
+  --bg-secondary: #ffffff;
+  --bg-elevated: #e8ecf1;
+  --bg-sidebar: #edf0f5;
+
+  --border-primary: #d0d7de;
+  --border-secondary: #c0c8d0;
+  --border-hover: #a0a8b0;
+
+  --text-primary: #1f2937;
+  --text-secondary: #4b5563;
+  --text-dim: #6b7280;
+  --text-muted: #9ca3af;
+
+  --accent-green: #22c55e;
+  --accent-green-bright: #16a34a;
+  --accent-orange: #f59e0b;
+  --accent-blue: #3b82f6;
+  --accent-red: #ef4444;
+
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 6px 16px rgba(0, 0, 0, 0.1);
+
+  --shimmer-highlight: #e0e5ea;
 }
 
 * {
@@ -59,6 +91,24 @@ body {
   flex-direction: column;
 }
 
+/* ===== Skip to content (a11y) ===== */
+.skip-to-content {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--accent-blue);
+  color: #fff;
+  padding: 0.5rem 1rem;
+  z-index: 10000;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-sm) 0;
+  transition: top 0.2s;
+}
+.skip-to-content:focus {
+  top: 0;
+}
+
 /* ===== Shared Animations ===== */
 @keyframes fadeSlideUp {
   from {
@@ -78,8 +128,28 @@ body {
 }
 
 .skeleton-card {
-  background: linear-gradient(90deg, var(--bg-secondary) 25%, #1a2535 50%, var(--bg-secondary) 75%);
+  background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--shimmer-highlight) 50%, var(--bg-secondary) 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
   border-radius: var(--radius-md);
+}
+
+/* ===== Mobile Responsive ===== */
+@media (max-width: 768px) {
+  .app-header {
+    padding: 0.5rem 1rem !important;
+  }
+
+  .app-header h1 {
+    font-size: 0.9rem !important;
+  }
+
+  .header-breadcrumb-sep,
+  .header-breadcrumb-page {
+    display: none;
+  }
+
+  .subtitle {
+    display: none;
+  }
 }

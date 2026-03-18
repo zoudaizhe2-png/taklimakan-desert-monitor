@@ -1,8 +1,8 @@
 """Desert Vegetation Change Tracker - Backend API."""
 
+import asyncio
 import os
-import logging
-import traceback
+from contextlib import asynccontextmanager
 from pathlib import Path
 
 try:
@@ -10,6 +10,23 @@ try:
     load_dotenv()
 except ImportError:
     pass
+
+import structlog
+
+structlog.configure(
+    processors=[
+        structlog.contextvars.merge_contextvars,
+        structlog.processors.add_log_level,
+        structlog.processors.TimeStamper(fmt="iso"),
+        structlog.dev.ConsoleRenderer(),
+    ],
+    wrapper_class=structlog.make_filtering_bound_logger(
+        int(os.environ.get("LOG_LEVEL", "20"))  # default INFO
+    ),
+    context_class=dict,
+    logger_factory=structlog.PrintLoggerFactory(),
+    cache_logger_on_first_use=True,
+)
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
@@ -20,16 +37,36 @@ from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 
 from rate_limit import limiter
+from middleware import RequestLoggingMiddleware
+from database import init_db
 from routers.analysis import router as analysis_router
 from routers.features import router as features_router
 from routers.dashboard_routes import router as dashboard_router
+from routers.news import router as news_router
+from routers.auth import router as auth_router
+from routers.alerts import router as alerts_router
+from routers.donations import router as donations_router
+from routers.ws import router as ws_router
+from websocket import heartbeat_loop
 
-logger = logging.getLogger(__name__)
+logger = structlog.get_logger()
+
+
+@asynccontextmanager
+async def lifespan(app):
+    """Initialize database and background tasks on startup."""
+    await init_db()
+    logger.info("database_initialized")
+    heartbeat_task = asyncio.create_task(heartbeat_loop())
+    yield
+    heartbeat_task.cancel()
+
 
 app = FastAPI(
     title="Taklimakan Desert Monitor",
     description="Interactive monitoring of vegetation, projects, and desert containment around the Taklimakan Desert",
     version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.state.limiter = limiter
@@ -46,6 +83,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(RequestLoggingMiddleware)
 
 
 # --- Global exception handlers ---
@@ -61,13 +99,19 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    logger.error("Unhandled exception on %s %s:\n%s", request.method, request.url.path, traceback.format_exc())
+    logger.error("unhandled_exception", method=request.method, path=request.url.path, error=str(exc))
     return JSONResponse(status_code=500, content={"detail": "Internal server error"})
 
 
+# --- Routers: /api/ (backward compat) + /api/v1/ ---
 app.include_router(analysis_router)
 app.include_router(features_router)
 app.include_router(dashboard_router)
+app.include_router(news_router)
+app.include_router(auth_router)
+app.include_router(alerts_router)
+app.include_router(donations_router)
+app.include_router(ws_router)
 
 # Serve built frontend in production
 STATIC_DIR = Path(__file__).parent / "static"

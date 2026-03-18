@@ -1,6 +1,6 @@
 import { useLanguage } from "../i18n/LanguageContext";
 
-export default function StatusBar({ dashboardData }) {
+export default function StatusBar({ dashboardData, wsConnected }) {
   const { t } = useLanguage();
   const now = new Date().toLocaleTimeString();
 
@@ -9,6 +9,12 @@ export default function StatusBar({ dashboardData }) {
       <span className="status-item status-updated">
         {t("lastUpdated")}: {now}
       </span>
+      {wsConnected !== undefined && (
+        <span className={`status-item ${wsConnected ? "" : "status-updated"}`}>
+          <span className={`status-dot ${wsConnected ? "live" : "demo"}`} />
+          {wsConnected ? t("ws_connected") : t("ws_disconnected")}
+        </span>
+      )}
       <div className="status-spacer" />
       {dashboardData && (
         <>

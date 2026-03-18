@@ -1,0 +1,97 @@
+.alert-bell-wrapper {
+  position: relative;
+}
+
+.alert-bell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-primary);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  position: relative;
+}
+
+.alert-bell:hover {
+  border-color: var(--accent-orange);
+  color: var(--accent-orange);
+}
+
+.alert-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: var(--accent-red);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 700;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.alert-dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  width: 280px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: 0.75rem;
+  z-index: 100;
+}
+
+.alert-dropdown h4 {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.alert-empty {
+  color: var(--text-dim);
+  font-size: 0.8rem;
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.alert-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  border-radius: var(--radius-sm);
+  margin-bottom: 0.25rem;
+  border-left: 3px solid transparent;
+}
+
+.alert-item.severity-info { border-left-color: var(--accent-blue); }
+.alert-item.severity-warning { border-left-color: var(--accent-orange); }
+.alert-item.severity-critical { border-left-color: var(--accent-red); }
+
+.alert-title {
+  font-size: 0.8rem;
+  color: var(--text-primary);
+}
+
+.alert-dismiss {
+  font-size: 0.65rem;
+  background: none;
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-sm);
+  color: var(--text-dim);
+  cursor: pointer;
+  padding: 0.15rem 0.4rem;
+}

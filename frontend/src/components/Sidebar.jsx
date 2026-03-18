@@ -29,6 +29,8 @@ export default function Sidebar({ activeView, onViewChange }) {
         key={v.id}
         className={`sidebar-icon ${activeView === v.id ? "active" : ""}`}
         onClick={() => onViewChange(v.id)}
+        aria-current={activeView === v.id ? "page" : undefined}
+        aria-label={t(v.labelKey)}
       >
         <Icon size={20} />
         <span className="sidebar-tooltip">{t(v.labelKey)}</span>
@@ -37,7 +39,7 @@ export default function Sidebar({ activeView, onViewChange }) {
   };
 
   return (
-    <nav className="sidebar">
+    <nav className="sidebar" role="navigation" aria-label="Main navigation">
       <div className="sidebar-brand">
         <FiSun size={16} />
       </div>

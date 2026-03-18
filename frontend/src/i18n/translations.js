@@ -203,6 +203,38 @@ export const translations = {
     news_lastUpdated: "Last updated",
     news_ctaMonitor: "Want to see live satellite data? Explore the Satellite Monitor →",
     news_noResults: "No articles found for this category",
+    // Auth
+    auth_login: "Log In",
+    auth_register: "Sign Up",
+    auth_email: "Email",
+    auth_password: "Password",
+    auth_displayName: "Display Name",
+    auth_noAccount: "Don't have an account?",
+    auth_hasAccount: "Already have an account?",
+    auth_logout: "Log Out",
+    auth_profile: "Profile",
+    // Theme
+    theme_light: "Light",
+    theme_dark: "Dark",
+    // Alerts
+    alerts_title: "Alerts",
+    alerts_empty: "No alerts",
+    alerts_acknowledge: "Dismiss",
+    // Onboarding
+    onboarding_welcome: "Welcome to the Taklimakan Desert Monitor",
+    onboarding_step1: "Click any feature on the map to see NDVI analysis",
+    onboarding_step2: "Use filters to show/hide categories",
+    onboarding_step3: "Toggle satellite imagery with the antenna icon",
+    onboarding_step4: "Compare years to see vegetation changes over time",
+    onboarding_step5: "Export your analysis as PNG, PDF, or CSV",
+    onboarding_skip: "Skip Tour",
+    onboarding_next: "Next",
+    onboarding_finish: "Get Started",
+    // Simulated data badge
+    simulated_data: "SIMULATED DATA",
+    // WebSocket status
+    ws_connected: "Live",
+    ws_disconnected: "Offline",
   },
   zh: {
     appTitle: "塔克拉玛干沙漠监测",
@@ -408,5 +440,37 @@ export const translations = {
     news_lastUpdated: "最后更新",
     news_ctaMonitor: "想查看实时卫星数据？前往卫星监测 →",
     news_noResults: "该分类暂无相关文章",
+    // Auth
+    auth_login: "登录",
+    auth_register: "注册",
+    auth_email: "邮箱",
+    auth_password: "密码",
+    auth_displayName: "显示名称",
+    auth_noAccount: "还没有账号？",
+    auth_hasAccount: "已有账号？",
+    auth_logout: "退出",
+    auth_profile: "个人资料",
+    // Theme
+    theme_light: "浅色",
+    theme_dark: "深色",
+    // Alerts
+    alerts_title: "通知",
+    alerts_empty: "暂无通知",
+    alerts_acknowledge: "忽略",
+    // Onboarding
+    onboarding_welcome: "欢迎使用塔克拉玛干沙漠监测平台",
+    onboarding_step1: "点击地图上的任何区域查看NDVI分析",
+    onboarding_step2: "使用筛选器显示/隐藏类别",
+    onboarding_step3: "点击天线图标切换卫星影像",
+    onboarding_step4: "对比不同年份查看植被变化",
+    onboarding_step5: "将分析结果导出为PNG、PDF或CSV",
+    onboarding_skip: "跳过",
+    onboarding_next: "下一步",
+    onboarding_finish: "开始使用",
+    // Simulated data badge
+    simulated_data: "模拟数据",
+    // WebSocket status
+    ws_connected: "在线",
+    ws_disconnected: "离线",
   },
 };

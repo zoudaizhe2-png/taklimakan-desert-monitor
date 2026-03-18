@@ -1,0 +1,81 @@
+.onboarding-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(3px);
+}
+
+.onboarding-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  max-width: 420px;
+  width: 90vw;
+  text-align: center;
+}
+
+.onboarding-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  color: var(--accent-green);
+}
+
+.onboarding-text {
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.onboarding-progress {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.onboarding-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-primary);
+}
+
+.onboarding-dot.active {
+  background: var(--accent-green);
+  transform: scale(1.3);
+}
+
+.onboarding-dot.done {
+  background: var(--accent-green);
+  opacity: 0.5;
+}
+
+.onboarding-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.onboarding-skip {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.onboarding-next {
+  padding: 0.5rem 1.5rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: var(--accent-green);
+  color: #0d1117;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+}

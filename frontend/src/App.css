@@ -630,3 +630,88 @@
 
 /* Shared animation used by multiple components */
 @keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(.7)} }
+
+/* ===== WebSocket status ===== */
+.ws-status {
+  display: flex;
+  align-items: center;
+}
+
+.ws-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.ws-status.connected .ws-dot {
+  background: var(--accent-green);
+  box-shadow: 0 0 4px var(--accent-green);
+}
+
+.ws-status.disconnected .ws-dot {
+  background: var(--text-dim);
+}
+
+/* ===== Header auth ===== */
+.header-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-primary);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.header-login:hover {
+  border-color: var(--accent-blue);
+  color: var(--accent-blue);
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.header-user-name {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.header-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-primary);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+}
+
+.header-logout:hover {
+  color: var(--accent-red);
+  border-color: var(--accent-red);
+}
+
+/* ===== Simulated Data Badge ===== */
+.simulated-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 167, 38, 0.15);
+  color: var(--accent-orange);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}

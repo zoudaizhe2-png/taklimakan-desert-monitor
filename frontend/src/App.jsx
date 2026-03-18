@@ -10,17 +10,23 @@ import FeatureDetails from "./components/FeatureDetails";
 import FullscreenButton from "./components/FullscreenButton";
 import ExportButton from "./components/ExportButton";
 import LanguageToggle from "./components/LanguageToggle";
+import ThemeToggle from "./components/ThemeToggle";
+import AlertBell from "./components/AlertBell";
+import AuthModal from "./components/AuthModal";
+import OnboardingTour from "./components/OnboardingTour";
 import Sidebar from "./components/Sidebar";
 import StatusBar from "./components/StatusBar";
 import MapYearSlider from "./components/MapYearSlider";
 import Spinner from "./components/Spinner";
 import SatellitePhoto from "./components/SatellitePhoto";
 import Timeline from "./components/Timeline";
-import { FiRadio } from "react-icons/fi";
+import { FiRadio, FiUser, FiLogOut } from "react-icons/fi";
 import { useLanguage } from "./i18n/LanguageContext";
+import { useAuth } from "./contexts/AuthContext";
 import { fetchDataSource } from "./api/client";
 import useMapState from "./hooks/useMapState";
 import useDashboard from "./hooks/useDashboard";
+import useWebSocket from "./hooks/useWebSocket";
 import "./App.css";
 import "./components/MapView.css";
 
@@ -36,14 +42,17 @@ const GroundResearchView = lazy(() => import("./components/GroundResearchView"))
 
 function App() {
   const { t } = useLanguage();
+  const { user, logout } = useAuth();
   const panelRef = useRef(null);
 
   const [activeView, setActiveView] = useState("home");
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [error, setError] = useState(null);
   const [dataSource, setDataSource] = useState(null);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
 
   const { dashboardData } = useDashboard();
+  const { connected: wsConnected, lastMessage: wsMessage } = useWebSocket();
 
   useEffect(() => {
     fetchDataSource().then(setDataSource).catch(() => {});
@@ -98,6 +107,8 @@ function App() {
 
   return (
     <div className={`app ${isFullscreen ? "fullscreen" : ""}`}>
+      <a className="skip-to-content" href="#main-content">Skip to content</a>
+
       <header className="app-header">
         <div className="header-left">
           <div className="header-title-row">
@@ -112,16 +123,29 @@ function App() {
             <span className="header-source-dot" />
             {dataSource?.source === "gee" ? "LIVE" : "Demo"}
           </div>
+          <span className={`ws-status ${wsConnected ? "connected" : "disconnected"}`} title={wsConnected ? t("ws_connected") : t("ws_disconnected")}>
+            <span className="ws-dot" />
+          </span>
+          <AlertBell wsMessage={wsMessage} />
+          <ThemeToggle />
           <LanguageToggle />
+          {user ? (
+            <div className="header-user">
+              <span className="header-user-name">{user.display_name}</span>
+              <button className="header-logout" onClick={logout} aria-label={t("auth_logout")}><FiLogOut size={14} /></button>
+            </div>
+          ) : (
+            <button className="header-login" onClick={() => setAuthModalOpen(true)} aria-label={t("auth_login")}><FiUser size={15} /></button>
+          )}
         </div>
       </header>
 
-      {error && <div className="error-banner" role="alert">{error} <button className="error-dismiss" onClick={() => setError(null)} aria-label="Dismiss error">✕</button></div>}
+      {error && <div className="error-banner" role="alert" aria-live="polite">{error} <button className="error-dismiss" onClick={() => setError(null)} aria-label="Dismiss error">✕</button></div>}
 
       <div className="app-shell">
         <Sidebar activeView={activeView} onViewChange={setActiveView} />
 
-        <main className="app-main-content">
+        <main className="app-main-content" id="main-content">
           {/* ===== MAP (always rendered, hidden via CSS to preserve state) ===== */}
           <div className={`view-panel ${activeView === "map" ? "active" : ""}`}>
             <div className="map-area map-fullbleed">
@@ -134,7 +158,7 @@ function App() {
                 <SearchFilterBar activeFilters={activeFilters} onToggleFilter={handleToggleFilter} searchQuery={searchQuery} onSearchChange={setSearchQuery} />
               </div>
 
-              <button className={`map-sat-toggle ${showSatBg ? "active" : ""}`} onClick={() => setShowSatBg(!showSatBg)} title={showSatBg ? "Hide satellite" : "Show satellite"}>
+              <button className={`map-sat-toggle ${showSatBg ? "active" : ""}`} onClick={() => setShowSatBg(!showSatBg)} title={showSatBg ? "Hide satellite" : "Show satellite"} aria-label={showSatBg ? "Hide satellite" : "Show satellite"}>
                 <FiRadio size={16} />
               </button>
               <FullscreenButton isFullscreen={isFullscreen} onToggle={() => setIsFullscreen(!isFullscreen)} />
@@ -198,7 +222,7 @@ function App() {
           {activeView === "snake" && (
             <div className="view-panel active">
               <Suspense fallback={<Spinner />}>
-                <SnakeRobotView onNavigate={setActiveView} />
+                <SnakeRobotView onNavigate={setActiveView} wsMessage={wsMessage} />
               </Suspense>
             </div>
           )}
@@ -241,7 +265,10 @@ function App() {
         </main>
       </div>
 
-      <StatusBar dashboardData={dashboardData} />
+      <StatusBar dashboardData={dashboardData} wsConnected={wsConnected} />
+
+      <AuthModal open={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+      <OnboardingTour />
     </div>
   );
 }
