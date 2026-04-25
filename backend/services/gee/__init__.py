@@ -7,8 +7,10 @@ Public surface:
   * Sentinel-2 NDVI helpers (re-exported from `sentinel2`):
         get_sentinel2_collection, compute_ndvi, get_ndvi_composite,
         get_ndvi_timeseries, get_ndvi_change, get_ndvi_grid, get_ndvi_tile_url
+  * SRTM elevation helpers (re-exported from `srtm`):
+        get_elevation, get_slope_aspect, get_terrain_grid
 
-Subsequent commits add SRTM, ERA5, and SMAP modules under this package.
+Subsequent commits add ERA5 and SMAP modules under this package.
 
 The legacy `services.gee_service` module re-exports everything here for
 backward compatibility — existing call sites do not need to change.
@@ -24,6 +26,11 @@ from .sentinel2 import (  # noqa: F401
     get_ndvi_grid,
     get_ndvi_tile_url,
 )
+from .srtm import (  # noqa: F401
+    get_elevation,
+    get_slope_aspect,
+    get_terrain_grid,
+)
 
 __all__ = [
     # auth
@@ -38,4 +45,8 @@ __all__ = [
     "get_ndvi_change",
     "get_ndvi_grid",
     "get_ndvi_tile_url",
+    # srtm
+    "get_elevation",
+    "get_slope_aspect",
+    "get_terrain_grid",
 ]
