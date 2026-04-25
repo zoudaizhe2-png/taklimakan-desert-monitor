@@ -4,7 +4,7 @@
 Real-time satellite monitoring of vegetation along the Taklimakan Desert greenbelt using Google Earth Engine + Sentinel-2 data.
 
 ## Live Site
-[your-domain-here] (coming soon)
+*Live deployment in progress*
 
 ## Quick Start
 
@@ -136,4 +136,4 @@ frontend/         React frontend (Vite)
 - **Deploy:** Docker, Railway, GitHub Actions CI
 
 ## License
-MIT
+MIT — see [LICENSE](./LICENSE)
