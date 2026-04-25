@@ -67,7 +67,7 @@ async def lifespan(app):
 app = FastAPI(
     title="Taklimakan Desert Monitor",
     description="Interactive monitoring of vegetation, projects, and desert containment around the Taklimakan Desert",
-    version="1.0.0",
+    version="1.0.1",
     lifespan=lifespan,
 )
 
@@ -133,4 +133,4 @@ if STATIC_DIR.exists():
 else:
     @app.get("/")
     def root():
-        return {"name": "Taklimakan Desert Monitor API", "version": "1.0.0", "docs": "/docs"}
+        return {"name": "Taklimakan Desert Monitor API", "version": "1.0.1", "docs": "/docs"}
