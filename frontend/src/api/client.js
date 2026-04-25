@@ -1,7 +1,7 @@
 const API_BASE = import.meta.env.DEV ? "http://localhost:8000/api" : "/api";
 const API_V1 = import.meta.env.DEV ? "http://localhost:8000/api/v1" : "/api/v1";
 
-class ApiError extends Error {
+export class ApiError extends Error {
   constructor(message, status, data) {
     super(message);
     this.name = "ApiError";
@@ -170,4 +170,90 @@ export async function fetchAlerts(signal) {
 
 export async function acknowledgeAlert(id) {
   return request(`/alerts/${id}/acknowledge`, { method: "POST" }, undefined, API_V1);
+}
+
+// --- L3 Recommendations API ---
+export async function fetchRecommendations(filters = {}, signal) {
+  const params = new URLSearchParams();
+  if (filters.status) params.append("status", filters.status);
+  if (filters.action_code) params.append("action_code", filters.action_code);
+  if (filters.approval_level) params.append("approval_level", filters.approval_level);
+  if (filters.feature_id) params.append("feature_id", filters.feature_id);
+  params.append("limit", String(filters.limit ?? 50));
+  const qs = params.toString();
+  return request(`/recommendations${qs ? `?${qs}` : ""}`, {}, signal, API_V1);
+}
+
+export async function evaluateRegion({ feature_id, region_geojson, override_data } = {}) {
+  return request("/recommendations/evaluate", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ feature_id, region_geojson, override_data }),
+  }, undefined, API_V1);
+}
+
+export async function decideRecommendation(id, { decision, notes } = {}) {
+  return request(`/recommendations/${id}/decision`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ decision, notes }),
+  }, undefined, API_V1);
+}
+
+// Module-level cache for the static action vocabulary (5 minute TTL).
+let _actionCatalogCache = null;
+let _actionCatalogTs = 0;
+const ACTION_CATALOG_TTL_MS = 5 * 60 * 1000;
+
+export async function fetchActionCatalog(signal) {
+  const now = Date.now();
+  if (_actionCatalogCache && now - _actionCatalogTs < ACTION_CATALOG_TTL_MS) {
+    return _actionCatalogCache;
+  }
+  const data = await request("/actions", {}, signal, API_V1);
+  _actionCatalogCache = data;
+  _actionCatalogTs = now;
+  return data;
+}
+
+export function clearActionCatalogCache() {
+  _actionCatalogCache = null;
+  _actionCatalogTs = 0;
+}
+
+export async function fetchActionDetail(code, signal) {
+  return request(`/actions/${encodeURIComponent(code)}`, {}, signal, API_V1);
+}
+
+// --- L1 Sense API (GEE-backed signal sources) ---
+export async function fetchSenseMulti({ geometry, year } = {}, signal) {
+  return request("/sense/multi", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ geometry, year }),
+  }, signal, API_V1);
+}
+
+export async function fetchElevation({ geometry } = {}, signal) {
+  return request("/sense/elevation", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ geometry }),
+  }, signal, API_V1);
+}
+
+export async function fetchRainfall({ geometry, year } = {}, signal) {
+  return request("/sense/rainfall", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ geometry, year }),
+  }, signal, API_V1);
+}
+
+export async function fetchSoilMoisture({ geometry } = {}, signal) {
+  return request("/sense/soil-moisture", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ geometry }),
+  }, signal, API_V1);
 }
