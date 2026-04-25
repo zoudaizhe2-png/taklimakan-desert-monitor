@@ -22,6 +22,7 @@ async def init_db():
     from models.user import User  # noqa: F401
     from models.alert import Alert  # noqa: F401
     from models.donation import Donation  # noqa: F401
+    from models.recommendation import Recommendation  # noqa: F401
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
