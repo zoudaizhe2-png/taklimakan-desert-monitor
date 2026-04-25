@@ -158,17 +158,41 @@ _TRIGGER_SPEC: dict[str, tuple[str, str]] = {
 _QUANT_OPS = {"ge", "le", "lt"}
 
 
+# Maps coarse data_requirements categories used by ActionDefinition.data_requirements
+# (ndvi, soil_moisture, rainfall, ...) to the concrete L1 field names that any
+# of their values would satisfy. A requirement is considered present if ANY of
+# the listed fields appears (non-None) in the L1 data.
+_DATA_REQ_ALIASES: dict[str, list[str]] = {
+    "ndvi":                 ["ndvi", "ndvi_low_years", "ndvi_low_months", "ndvi_drop", "ndvi_drop_periods"],
+    "soil_moisture":        ["soil_moisture_pct", "soil_moisture_critical", "soil_moisture_saturated"],
+    "rainfall":             ["annual_rainfall_mm", "forecast_rainfall_mm_14d", "forecast_rainfall_mm_7d",
+                             "forecast_wind_m_per_s", "forecast_visibility_km", "forecast_temp_c", "rainfall"],
+    "groundwater_depth":    ["groundwater_depth_m", "groundwater_decline_years", "groundwater_decline_m_per_year"],
+    "elevation":            ["elevation_m", "slope_degrees", "terrain", "elevation"],
+    "soil_type":            ["soil_type", "soil_salinity_pct", "dry_sand_layer_cm"],
+    "historical_planting":  ["has_young_seedlings", "days_since_last_inspection", "is_priority_zone",
+                             "historical_planting"],
+    "species_map":          ["species_map", "zone"],
+}
+
+
+def _req_satisfied(req: str, l1_data: dict) -> bool:
+    """Check if a coarse data_requirements entry has any of its alias fields populated."""
+    fields = _DATA_REQ_ALIASES.get(req, [req])
+    return any(l1_data.get(f) is not None for f in fields)
+
+
 def _data_completeness(action: ActionDefinition, l1_data: dict) -> float:
-    """Fraction of action.data_requirements present (non-None) in l1_data."""
+    """Fraction of action.data_requirements present in l1_data (alias-aware)."""
     reqs = action.data_requirements
     if not reqs:
         return 1.0
-    present = sum(1 for r in reqs if l1_data.get(r) is not None)
+    present = sum(1 for r in reqs if _req_satisfied(r, l1_data))
     return present / len(reqs)
 
 
 def _missing_data_fields(action: ActionDefinition, l1_data: dict) -> list[str]:
-    return [r for r in action.data_requirements if l1_data.get(r) is None]
+    return [r for r in action.data_requirements if not _req_satisfied(r, l1_data)]
 
 
 def _check_one(op: str, cond_val: Any, actual: Any) -> tuple[bool, bool]:
