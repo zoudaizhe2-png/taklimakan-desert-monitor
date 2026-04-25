@@ -3,7 +3,7 @@ import { describe, it, expect, vi } from "vitest";
 import SearchFilterBar from "../components/SearchFilterBar";
 
 vi.mock("../i18n/LanguageContext", () => ({
-  useLanguage: () => ({ t: (key) => key, language: "en" }),
+  useLanguage: () => ({ t: (key) => key, lang: "en" }),
 }));
 
 vi.mock("../components/MapMarkerIcons", () => ({

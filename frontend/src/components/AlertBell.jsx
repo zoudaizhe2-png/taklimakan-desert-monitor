@@ -5,7 +5,7 @@ import { fetchAlerts, acknowledgeAlert } from "../api/client";
 import "./AlertBell.css";
 
 export default function AlertBell({ wsMessage }) {
-  const { t, language } = useLanguage();
+  const { t, lang } = useLanguage();
   const [alerts, setAlerts] = useState([]);
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
@@ -51,7 +51,7 @@ export default function AlertBell({ wsMessage }) {
           {alerts.length === 0 && <p className="alert-empty">{t("alerts_empty")}</p>}
           {alerts.map((alert) => (
             <div key={alert.id} className={`alert-item severity-${alert.severity}`}>
-              <span className="alert-title">{language === "zh" ? alert.title_zh || alert.title_en : alert.title_en}</span>
+              <span className="alert-title">{lang === "zh" ? alert.title_zh || alert.title_en : alert.title_en}</span>
               <button className="alert-dismiss" onClick={() => handleAcknowledge(alert.id)}>{t("alerts_acknowledge")}</button>
             </div>
           ))}

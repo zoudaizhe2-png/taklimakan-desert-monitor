@@ -14,7 +14,7 @@ function categoryColor(cat) {
 
 /* ── Main component ── */
 export default function NewsView({ onNavigate }) {
-  const { t, language } = useLanguage();
+  const { t, lang } = useLanguage();
   const [activeCat, setActiveCat] = useState("all");
 
   const filtered = activeCat === "all"
@@ -74,10 +74,10 @@ export default function NewsView({ onNavigate }) {
                   {t(`news_cat${article.category === "greenbelt" ? "GreenBelt" : article.category === "water" ? "Water" : article.category === "policy" ? "Policy" : article.category === "kekeya" ? "Kekeya" : "Tech"}`)}
                 </span>
                 <h3 className="news-card-title">
-                  {language === "zh" ? article.titleZh : article.titleEn}
+                  {lang === "zh" ? article.titleZh : article.titleEn}
                 </h3>
                 <p className="news-card-desc">
-                  {language === "zh" ? article.descZh : article.descEn}
+                  {lang === "zh" ? article.descZh : article.descEn}
                 </p>
                 <div className="news-card-footer">
                   <span>

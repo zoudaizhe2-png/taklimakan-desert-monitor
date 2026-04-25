@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 
 // Mock LanguageContext
 vi.mock("../i18n/LanguageContext", () => ({
-  useLanguage: () => ({ t: (key) => key, language: "en" }),
+  useLanguage: () => ({ t: (key) => key, lang: "en" }),
 }));
 
 // Mock icons
