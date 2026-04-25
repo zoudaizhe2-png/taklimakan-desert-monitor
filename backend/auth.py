@@ -1,5 +1,6 @@
 """JWT authentication utilities."""
 
+import logging
 import os
 from datetime import datetime, timedelta, timezone
 from typing import Optional
@@ -14,7 +15,27 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from database import get_db
 from models.user import User
 
-SECRET_KEY = os.environ.get("JWT_SECRET", "dev-secret-change-in-production")
+logger = logging.getLogger(__name__)
+
+# Fail-fast JWT secret loading.
+# - In production (ENV=production), JWT_SECRET MUST be set or app refuses to start.
+# - In dev/test, fall back to insecure default but emit a loud warning.
+_DEV_FALLBACK_SECRET = "dev-secret-change-in-production"
+_ENV = os.environ.get("ENV", "development").lower()
+SECRET_KEY = os.environ.get("JWT_SECRET")
+
+if not SECRET_KEY:
+    if _ENV == "production":
+        raise RuntimeError(
+            "JWT_SECRET environment variable is required in production. "
+            "Set a strong random secret (e.g. `openssl rand -hex 32`) before starting the app."
+        )
+    logger.warning(
+        "JWT_SECRET not set — falling back to INSECURE dev default. "
+        "Never run this in production without setting JWT_SECRET."
+    )
+    SECRET_KEY = _DEV_FALLBACK_SECRET
+
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60 * 24 * 7  # 7 days
 
