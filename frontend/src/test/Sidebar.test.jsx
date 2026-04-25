@@ -13,7 +13,7 @@ vi.mock("react-icons/fi", () => {
   return {
     FiMap: Icon, FiActivity: Icon, FiFolder: Icon, FiClock: Icon,
     FiHome: Icon, FiGift: Icon, FiGlobe: Icon, FiFileText: Icon,
-    FiSun: Icon, FiCompass: Icon, FiTarget: Icon,
+    FiSun: Icon, FiCompass: Icon, FiTarget: Icon, FiInbox: Icon,
   };
 });
 vi.mock("../components/icons/SnakeIcon", () => ({
@@ -23,10 +23,10 @@ vi.mock("../components/icons/SnakeIcon", () => ({
 describe("Sidebar", () => {
   it("renders all navigation items", () => {
     render(<Sidebar activeView="home" onViewChange={() => {}} />);
-    // Main views: home, vision, map, monitor, projects, research, playground, snake
+    // Main views: home, vision, map, decisions, monitor, projects, research, playground, snake
     // Secondary: donate, timeline, news
     const buttons = screen.getAllByRole("button");
-    expect(buttons.length).toBe(11);
+    expect(buttons.length).toBe(12);
   });
 
   it("marks the active view", () => {

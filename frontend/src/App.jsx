@@ -40,6 +40,7 @@ const NewsView = lazy(() => import("./components/NewsView"));
 const SatellitePlayground = lazy(() => import("./components/SatellitePlayground"));
 const GroundResearchView = lazy(() => import("./components/GroundResearchView"));
 const VisionView = lazy(() => import("./components/VisionView"));
+const DecisionCenterView = lazy(() => import("./components/DecisionCenterView"));
 
 function App() {
   const { t } = useLanguage();
@@ -269,6 +270,15 @@ function App() {
             <div className="view-panel active">
               <Suspense fallback={<Spinner />}>
                 <VisionView onNavigate={setActiveView} />
+              </Suspense>
+            </div>
+          )}
+
+          {/* ===== DECISION CENTER ===== */}
+          {activeView === "decisions" && (
+            <div className="view-panel active">
+              <Suspense fallback={<Spinner />}>
+                <DecisionCenterView />
               </Suspense>
             </div>
           )}

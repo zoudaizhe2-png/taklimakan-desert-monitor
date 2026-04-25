@@ -236,6 +236,85 @@ export const translations = {
     ws_connected: "Live",
     ws_disconnected: "Offline",
 
+    // ── Decision Center view ─────────────────────────────────
+    viewDecisions: "Decisions",
+
+    dc_hero_badge: "Decision Center",
+    dc_hero_title: "Decision Center",
+    dc_hero_sub: "L3 recommendation engine — 17 actions, 4 categories. Each suggestion ships with confidence, cost, ETA, and approval level.",
+    dc_hero_completeness: "Data completeness",
+    dc_hero_demoWarn: "Demo mode — most items await L1 inputs",
+
+    dc_filter_aria: "Recommendation filters",
+    dc_filter_status: "Status",
+    dc_filter_category: "Category",
+    dc_filter_approval: "Approval",
+    dc_reevaluate: "Re-evaluate region",
+    dc_evaluating: "Evaluating...",
+
+    dc_status_all: "All",
+    dc_status_pending: "Pending",
+    dc_status_approved: "Approved",
+    dc_status_rejected: "Rejected",
+    dc_status_deferred: "Deferred",
+    dc_status_executed: "Executed",
+    dc_status_expired: "Expired",
+
+    dc_cat_all: "All",
+    dc_cat_planting: "Planting",
+    dc_cat_irrigation: "Irrigation",
+    dc_cat_inspection: "Inspection",
+    dc_cat_alert: "Alert",
+
+    dc_appr_all: "All",
+    dc_appr_local: "Local",
+    dc_appr_project: "Project Office",
+    dc_appr_prefecture: "Prefecture",
+    dc_appr_regional: "Regional Bureau",
+
+    dc_loading: "Loading recommendations...",
+    dc_empty_title: "No recommendations match",
+    dc_empty_desc: "Try adjusting filters, or re-evaluate the region for fresh suggestions.",
+
+    dc_card_confidence: "Confidence",
+    dc_card_cost: "Estimated cost",
+    dc_card_eta: "ETA",
+    dc_card_approval: "Approval",
+    dc_card_snapshot: "Trigger snapshot",
+    dc_card_detail: "View detail",
+
+    dc_action_approve: "Approve",
+    dc_action_reject: "Reject",
+    dc_action_defer: "Defer",
+    dc_action_loginRequired: "Sign in to decide",
+
+    dc_modal_approveTitle: "Approve recommendation",
+    dc_modal_rejectTitle: "Reject recommendation",
+    dc_modal_deferTitle: "Defer recommendation",
+    dc_modal_notesLabel: "Notes (optional)",
+    dc_modal_notesPlaceholder: "Reasoning, conditions, follow-up actions...",
+    dc_modal_cancel: "Cancel",
+    dc_modal_confirm: "Confirm",
+    dc_modal_saving: "Saving...",
+    dc_modal_authError: "Sign in expired — please log back in.",
+
+    dc_drawer_triggerSpec: "Trigger spec (action vocabulary)",
+    dc_drawer_triggerSnapshot: "Trigger data snapshot (this recommendation)",
+    dc_drawer_outputParams: "Output parameters",
+    dc_drawer_meta: "Action metadata",
+    dc_drawer_confidenceBaseline: "Baseline confidence",
+    dc_drawer_unitCost: "Unit cost",
+    dc_drawer_etaRange: "ETA range",
+    dc_drawer_dataNeeds: "Data requirements",
+    dc_drawer_canAuto: "Auto-execute (Phase C)",
+    dc_drawer_citations: "Citations",
+    dc_drawer_citenote: "Sources for this action — see the action vocabulary doc on GitHub.",
+    dc_drawer_noSpec: "No spec available.",
+
+    dc_months: "months",
+    dc_yes: "Yes",
+    dc_no: "No",
+
     // ── Vision / Roadmap view ────────────────────────────────
     viewVision: "Vision",
 
@@ -661,6 +740,85 @@ export const translations = {
     // WebSocket status
     ws_connected: "在线",
     ws_disconnected: "离线",
+
+    // ── Decision Center view ─────────────────────────────────
+    viewDecisions: "决策中心",
+
+    dc_hero_badge: "决策中心",
+    dc_hero_title: "决策中心",
+    dc_hero_sub: "L3 推荐引擎 — 17 个 action，4 大类。每条建议带置信度、成本、见效时间、审批层级。",
+    dc_hero_completeness: "数据完整度",
+    dc_hero_demoWarn: "Demo 模式 — 大部分推荐等待 L1 数据接入",
+
+    dc_filter_aria: "推荐筛选器",
+    dc_filter_status: "状态",
+    dc_filter_category: "类别",
+    dc_filter_approval: "审批",
+    dc_reevaluate: "重新评估区域",
+    dc_evaluating: "评估中...",
+
+    dc_status_all: "全部",
+    dc_status_pending: "待审",
+    dc_status_approved: "已批准",
+    dc_status_rejected: "已驳回",
+    dc_status_deferred: "暂缓",
+    dc_status_executed: "已执行",
+    dc_status_expired: "已过期",
+
+    dc_cat_all: "全部",
+    dc_cat_planting: "种植",
+    dc_cat_irrigation: "灌溉",
+    dc_cat_inspection: "巡检",
+    dc_cat_alert: "预警",
+
+    dc_appr_all: "全部",
+    dc_appr_local: "基层",
+    dc_appr_project: "项目办",
+    dc_appr_prefecture: "地州林业局",
+    dc_appr_regional: "自治区林草局",
+
+    dc_loading: "加载推荐中...",
+    dc_empty_title: "暂无匹配推荐",
+    dc_empty_desc: "试试调整 filter，或重新评估区域获取新建议。",
+
+    dc_card_confidence: "置信度",
+    dc_card_cost: "预估成本",
+    dc_card_eta: "见效时间",
+    dc_card_approval: "审批层级",
+    dc_card_snapshot: "触发数据",
+    dc_card_detail: "查看详情",
+
+    dc_action_approve: "批准",
+    dc_action_reject: "驳回",
+    dc_action_defer: "暂缓",
+    dc_action_loginRequired: "登录后审批",
+
+    dc_modal_approveTitle: "批准推荐",
+    dc_modal_rejectTitle: "驳回推荐",
+    dc_modal_deferTitle: "暂缓推荐",
+    dc_modal_notesLabel: "审批备注（可选）",
+    dc_modal_notesPlaceholder: "理由、条件、后续动作...",
+    dc_modal_cancel: "取消",
+    dc_modal_confirm: "确认",
+    dc_modal_saving: "保存中...",
+    dc_modal_authError: "登录已过期，请重新登录。",
+
+    dc_drawer_triggerSpec: "触发条件规范（action vocabulary）",
+    dc_drawer_triggerSnapshot: "本推荐的触发数据快照",
+    dc_drawer_outputParams: "输出参数",
+    dc_drawer_meta: "Action 元信息",
+    dc_drawer_confidenceBaseline: "基线置信度",
+    dc_drawer_unitCost: "单位成本",
+    dc_drawer_etaRange: "见效区间",
+    dc_drawer_dataNeeds: "数据需求",
+    dc_drawer_canAuto: "可自动执行（Phase C）",
+    dc_drawer_citations: "引用",
+    dc_drawer_citenote: "本 action 的出处 — 详见 GitHub 上的 action vocabulary 文档。",
+    dc_drawer_noSpec: "无规范数据。",
+
+    dc_months: "个月",
+    dc_yes: "是",
+    dc_no: "否",
 
     // ── Vision / Roadmap view ────────────────────────────────
     viewVision: "愿景",

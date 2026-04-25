@@ -1,5 +1,5 @@
 import { useLanguage } from "../i18n/LanguageContext";
-import { FiMap, FiActivity, FiFolder, FiClock, FiHome, FiGift, FiGlobe, FiFileText, FiSun, FiCompass, FiTarget } from "react-icons/fi";
+import { FiMap, FiActivity, FiFolder, FiClock, FiHome, FiGift, FiGlobe, FiFileText, FiSun, FiCompass, FiTarget, FiInbox } from "react-icons/fi";
 import SnakeIcon from "./icons/SnakeIcon";
 import "./Sidebar.css";
 
@@ -7,6 +7,7 @@ const MAIN_VIEWS = [
   { id: "home", icon: FiHome, labelKey: "viewHome" },
   { id: "vision", icon: FiTarget, labelKey: "viewVision" },
   { id: "map", icon: FiMap, labelKey: "viewMap" },
+  { id: "decisions", icon: FiInbox, labelKey: "viewDecisions" },
   { id: "monitor", icon: FiActivity, labelKey: "viewMonitor" },
   { id: "projects", icon: FiFolder, labelKey: "viewProjects" },
   { id: "research", icon: FiCompass, labelKey: "viewResearch" },
