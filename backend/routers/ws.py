@@ -12,13 +12,21 @@ from websocket import manager
 
 router = APIRouter()
 
+# Hard cap on concurrent WebSocket clients. Beyond this we reject new
+# connections with policy-violation close code so a single rogue client
+# can't exhaust file descriptors / event loop tasks.
+MAX_WS_CONNECTIONS = 100
+
 
 @router.websocket("/api/v1/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    if len(manager.active_connections) >= MAX_WS_CONNECTIONS:
+        await websocket.close(code=1008, reason="Server full")
+        return
+
     await manager.connect(websocket)
+    telemetry_task = asyncio.create_task(_send_telemetry(websocket))
     try:
-        # Start sending simulated telemetry
-        telemetry_task = asyncio.create_task(_send_telemetry(websocket))
         while True:
             data = await websocket.receive_text()
             # Handle incoming messages (e.g., subscriptions)
@@ -29,8 +37,15 @@ async def websocket_endpoint(websocket: WebSocket):
             except json.JSONDecodeError:
                 pass
     except WebSocketDisconnect:
-        manager.disconnect(websocket)
+        pass
+    finally:
+        # Always cancel the telemetry task and disconnect, even on unexpected exceptions.
         telemetry_task.cancel()
+        try:
+            await telemetry_task
+        except (asyncio.CancelledError, Exception):
+            pass
+        manager.disconnect(websocket)
 
 
 async def _send_telemetry(websocket: WebSocket):
