@@ -12,8 +12,9 @@ Public surface:
   * ERA5 climate helpers (re-exported from `era5`):
         get_annual_rainfall_mm, get_temperature_extremes,
         get_climatology_normal, get_recent_drought_index
-
-Subsequent commits add the SMAP module under this package.
+  * SMAP soil-moisture helpers (re-exported from `smap`):
+        get_soil_moisture_now, get_soil_moisture_trend,
+        get_soil_moisture_anomaly
 
 The legacy `services.gee_service` module re-exports everything here for
 backward compatibility — existing call sites do not need to change.
@@ -40,6 +41,11 @@ from .era5 import (  # noqa: F401
     get_climatology_normal,
     get_recent_drought_index,
 )
+from .smap import (  # noqa: F401
+    get_soil_moisture_now,
+    get_soil_moisture_trend,
+    get_soil_moisture_anomaly,
+)
 
 __all__ = [
     # auth
@@ -63,4 +69,8 @@ __all__ = [
     "get_temperature_extremes",
     "get_climatology_normal",
     "get_recent_drought_index",
+    # smap
+    "get_soil_moisture_now",
+    "get_soil_moisture_trend",
+    "get_soil_moisture_anomaly",
 ]
