@@ -101,7 +101,8 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
-    logger.error("unhandled_exception", method=request.method, path=request.url.path, error=str(exc))
+    # logger.exception() automatically attaches the traceback; logger.error() does not.
+    logger.exception("unhandled_exception", method=request.method, path=request.url.path, error=str(exc))
     return JSONResponse(status_code=500, content={"detail": "Internal server error"})
 
 
