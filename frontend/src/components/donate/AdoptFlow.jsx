@@ -33,6 +33,26 @@ export default function AdoptFlow({ adoptStep, setAdoptStep, selectedTier, snake
 
   return (
     <FadeSection className="adopt-flow-section">
+      {/* Demo-mode warning — payment integration is not live. */}
+      <div
+        role="alert"
+        style={{
+          background: "#fff3cd",
+          color: "#664d03",
+          border: "1px solid #ffe69c",
+          borderRadius: "8px",
+          padding: "10px 16px",
+          fontSize: "13px",
+          fontWeight: 600,
+          marginBottom: "16px",
+          textAlign: "center",
+        }}
+      >
+        {zh
+          ? "⚠️ 演示模式 — 支付功能即将上线，当前提交仅保存为意向"
+          : "⚠️ Demo Mode — Payment integration coming. Submissions are saved to a wishlist only."}
+      </div>
+
       {/* Step indicator */}
       <div className="adopt-stepper">
         {STEPS.map((s, i) => (

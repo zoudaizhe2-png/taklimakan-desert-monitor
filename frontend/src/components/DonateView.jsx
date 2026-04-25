@@ -261,6 +261,24 @@ export default function DonateView() {
 
   return (
     <div className="donate-view">
+      {/* Demo-mode warning — payment integration is not live. */}
+      <div
+        role="alert"
+        style={{
+          background: "#fff3cd",
+          color: "#664d03",
+          borderBottom: "1px solid #ffe69c",
+          padding: "10px 20px",
+          fontSize: "13px",
+          fontWeight: 600,
+          textAlign: "center",
+        }}
+      >
+        {zh
+          ? "⚠️ 演示模式 — 支付功能即将上线，当前提交仅保存为意向"
+          : "⚠️ Demo Mode — Payment integration coming. Submissions are saved to a wishlist only."}
+      </div>
+
       {/* Hero */}
       <div className="donate-hero">
         <div className="donate-hero-content">
