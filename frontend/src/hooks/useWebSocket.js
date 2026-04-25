@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 
 const WS_BASE = import.meta.env.DEV
-  ? "ws://localhost:8001/api/v1/ws"
+  ? "ws://localhost:8000/api/v1/ws"
   : `${location.protocol === "https:" ? "wss:" : "ws:"}//${location.host}/api/v1/ws`;
 
 export default function useWebSocket() {
