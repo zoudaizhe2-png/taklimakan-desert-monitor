@@ -3,12 +3,12 @@
 import asyncio
 import os
 import logging
-import threading
 from datetime import datetime
 
 from fastapi import APIRouter, Request
 from pydantic import BaseModel, field_validator, model_validator
 
+from cache import cached
 from services.ndvi_service import (
     PRESET_REGIONS,
     generate_demo_change,
@@ -229,43 +229,54 @@ FULL_REGION = {
     "coordinates": [[[75, 35.5], [90, 35.5], [90, 43], [75, 43], [75, 35.5]]],
 }
 
-_ndvi_cache = {"data": None, "loading": False, "source": None}
+_NDVI_CACHE_KEY = "ndvi_grid_full"
+_NDVI_CACHE_TTL = 3600  # 1 hour
+_ndvi_grid_task: asyncio.Task | None = None
 
 
-def _fetch_ndvi_grid_bg():
-    """Background thread: fetch real NDVI grid from GEE and cache it."""
-    global _ndvi_cache
-    try:
-        if _use_gee():
+async def _fetch_ndvi_grid_full():
+    """Fetch full-region NDVI grid (GEE or demo). Called via cache.cached()."""
+    if _use_gee():
+        try:
             from services.gee_service import get_ndvi_grid as gee_grid
             logger.info("Fetching real NDVI grid from GEE (15x15)...")
-            data = gee_grid(FULL_REGION, 2024, 15)
-            _ndvi_cache = {"data": data, "loading": False, "source": "gee"}
+            data = await asyncio.to_thread(gee_grid, FULL_REGION, 2024, 15)
             logger.info("NDVI grid cached: %d points from GEE", len(data))
-        else:
-            data = generate_demo_grid(FULL_REGION, 2024, 15)
-            _ndvi_cache = {"data": data, "loading": False, "source": "demo"}
-            logger.info("NDVI grid cached: %d points (demo)", len(data))
-    except Exception as e:
-        logger.error("NDVI grid fetch failed: %s — using demo fallback", e)
-        data = generate_demo_grid(FULL_REGION, 2024, 15)
-        _ndvi_cache = {"data": data, "loading": False, "source": "demo"}
+            return {"data": data, "source": "gee"}
+        except Exception as e:
+            logger.error("NDVI grid fetch failed: %s — using demo fallback", e)
+    data = await asyncio.to_thread(generate_demo_grid, FULL_REGION, 2024, 15)
+    logger.info("NDVI grid cached: %d points (demo)", len(data))
+    return {"data": data, "source": "demo"}
 
 
 @router.get("/ndvi-grid-cache")
 @limiter.limit("60/minute")
-def get_ndvi_grid_cache(request: Request):
+async def get_ndvi_grid_cache(request: Request):
     """
     Return cached NDVI grid for the full Taklimakan region.
     First call triggers a background fetch (~15-20s for GEE).
     Returns {"status": "loading"} while fetching.
-    """
-    if _ndvi_cache["data"] is not None:
-        return {"status": "ready", "data": _ndvi_cache["data"], "source": _ndvi_cache["source"]}
 
-    if not _ndvi_cache["loading"]:
-        _ndvi_cache["loading"] = True
-        thread = threading.Thread(target=_fetch_ndvi_grid_bg, daemon=True)
-        thread.start()
+    Concurrency: cache.cached() uses an asyncio.Lock per key so concurrent
+    requests during the first fetch coalesce into a single GEE call.
+    """
+    global _ndvi_grid_task
+
+    # If we've previously completed a fetch, the cached() call is effectively
+    # instant — return ready immediately.
+    if _ndvi_grid_task is not None and _ndvi_grid_task.done():
+        try:
+            result = _ndvi_grid_task.result()
+            return {"status": "ready", "data": result["data"], "source": result["source"]}
+        except Exception:
+            # Previous attempt failed — clear so we retry below.
+            _ndvi_grid_task = None
+
+    # Kick off (or attach to) the background fetch and return immediately.
+    if _ndvi_grid_task is None or _ndvi_grid_task.done():
+        _ndvi_grid_task = asyncio.create_task(
+            cached(_NDVI_CACHE_KEY, _NDVI_CACHE_TTL, _fetch_ndvi_grid_full)
+        )
 
     return {"status": "loading"}
