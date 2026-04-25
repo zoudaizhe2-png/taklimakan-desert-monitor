@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { useLanguage } from "../i18n/LanguageContext";
 import "./AuthModal.css";
@@ -12,6 +12,45 @@ export default function AuthModal({ open, onClose }) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const emailInputRef = useRef(null);
+  const modalRef = useRef(null);
+
+  // ESC closes the modal.
+  useEffect(() => {
+    if (!open) return undefined;
+    function onKey(e) {
+      if (e.key === "Escape") {
+        e.stopPropagation();
+        onClose();
+      } else if (e.key === "Tab") {
+        // Trap focus inside the modal.
+        const root = modalRef.current;
+        if (!root) return;
+        const focusable = root.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  // Focus the email input when modal opens.
+  useEffect(() => {
+    if (open && emailInputRef.current) {
+      emailInputRef.current.focus();
+    }
+  }, [open]);
 
   if (!open) return null;
 
@@ -33,12 +72,22 @@ export default function AuthModal({ open, onClose }) {
     }
   }
 
+  const titleId = "auth-modal-title";
+
   return (
     <div className="auth-overlay" onClick={onClose}>
-      <div className="auth-modal" onClick={(e) => e.stopPropagation()}>
-        <h2>{mode === "login" ? t("auth_login") : t("auth_register")}</h2>
+      <div
+        ref={modalRef}
+        className="auth-modal"
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+      >
+        <h2 id={titleId}>{mode === "login" ? t("auth_login") : t("auth_register")}</h2>
         <form onSubmit={handleSubmit}>
           <input
+            ref={emailInputRef}
             type="email"
             placeholder={t("auth_email")}
             value={email}
