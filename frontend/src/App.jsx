@@ -15,6 +15,7 @@ import AlertBell from "./components/AlertBell";
 import AuthModal from "./components/AuthModal";
 import OnboardingTour from "./components/OnboardingTour";
 import Sidebar from "./components/Sidebar";
+import MobileTabBar from "./components/MobileTabBar";
 import StatusBar from "./components/StatusBar";
 import MapYearSlider from "./components/MapYearSlider";
 import Spinner from "./components/Spinner";
@@ -146,6 +147,7 @@ function App() {
 
       <div className="app-shell">
         <Sidebar activeView={activeView} onViewChange={setActiveView} />
+        <MobileTabBar activeView={activeView} onViewChange={setActiveView} />
 
         <main className="app-main-content" id="main-content">
           {/* ===== MAP (always rendered, hidden via CSS to preserve state) ===== */}

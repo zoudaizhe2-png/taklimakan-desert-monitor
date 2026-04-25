@@ -1,0 +1,193 @@
+/* ─────────────────────────────────────────────────────────────────
+ * MobileTabBar (Phase 5b)
+ * Hidden by default — only shown when the viewport is <= 720px.
+ * ───────────────────────────────────────────────────────────────── */
+.mtb,
+.mtb-drawer,
+.mtb-drawer-backdrop {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .mtb {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(56px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--bg-sidebar);
+    border-top: 1px solid var(--border-secondary);
+    z-index: 1200;
+    align-items: stretch;
+    justify-content: space-around;
+    box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.18);
+  }
+
+  .mtb-tab {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-dim, #6a7a8a);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    padding: 6px 4px;
+    cursor: pointer;
+    font-family: inherit;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    min-height: 44px;
+    position: relative;
+  }
+
+  .mtb-tab:hover {
+    color: var(--text-primary, #e0e0e0);
+  }
+
+  .mtb-tab:focus-visible {
+    outline: 2px solid var(--accent-blue, #4fc3f7);
+    outline-offset: -3px;
+    border-radius: 6px;
+  }
+
+  .mtb-tab.active {
+    color: var(--accent-green, #91cf60);
+  }
+
+  .mtb-tab.active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 22%;
+    right: 22%;
+    height: 3px;
+    background: var(--accent-green, #91cf60);
+    border-radius: 0 0 3px 3px;
+  }
+
+  .mtb-label {
+    font-size: 10px;
+    line-height: 1.1;
+    letter-spacing: 0.2px;
+  }
+
+  /* ── Drawer ── */
+  .mtb-drawer-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1300;
+    animation: mtb-fade 0.18s ease;
+  }
+
+  .mtb-drawer {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg-secondary, #111922);
+    border-top: 1px solid var(--border-primary, #1e2a3a);
+    border-radius: 16px 16px 0 0;
+    padding: 12px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 1400;
+    transform: translateY(100%);
+    transition: transform 0.22s cubic-bezier(0.22, 0.61, 0.36, 1);
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+
+  .mtb-drawer.open {
+    transform: translateY(0);
+  }
+
+  .mtb-drawer-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 4px 8px 12px;
+    border-bottom: 1px solid var(--border-secondary, #2a2a4a);
+    margin-bottom: 8px;
+  }
+
+  .mtb-drawer-head h2 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-primary, #e0e0e0);
+    margin: 0;
+  }
+
+  .mtb-drawer-close {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary, #9ba8b5);
+    padding: 6px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 32px;
+    min-height: 32px;
+  }
+
+  .mtb-drawer-close:hover {
+    background: var(--bg-elevated, #16213e);
+    color: var(--text-primary, #e0e0e0);
+  }
+
+  .mtb-drawer-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .mtb-drawer-item {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border-secondary, #2a2a4a);
+    border-radius: 10px;
+    padding: 12px;
+    color: var(--text-primary, #e0e0e0);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 13px;
+    font-family: inherit;
+    text-align: left;
+    min-height: 44px;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+
+  .mtb-drawer-item:hover,
+  .mtb-drawer-item:focus-visible {
+    background: var(--bg-elevated, #16213e);
+    border-color: var(--border-hover, #3a3a5a);
+    outline: none;
+  }
+
+  .mtb-drawer-item.active {
+    background: rgba(145, 207, 96, 0.12);
+    border-color: var(--accent-green, #91cf60);
+    color: var(--accent-green, #91cf60);
+  }
+
+  /* Push main content above the bar so the bar never hides content. */
+  .app-shell {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@keyframes mtb-fade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
