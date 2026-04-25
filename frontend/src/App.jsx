@@ -39,6 +39,7 @@ const DonateView = lazy(() => import("./components/DonateView"));
 const NewsView = lazy(() => import("./components/NewsView"));
 const SatellitePlayground = lazy(() => import("./components/SatellitePlayground"));
 const GroundResearchView = lazy(() => import("./components/GroundResearchView"));
+const VisionView = lazy(() => import("./components/VisionView"));
 
 function App() {
   const { t } = useLanguage();
@@ -259,6 +260,15 @@ function App() {
             <div className="view-panel active">
               <Suspense fallback={<Spinner />}>
                 <NewsView onNavigate={setActiveView} />
+              </Suspense>
+            </div>
+          )}
+
+          {/* ===== VISION / ROADMAP ===== */}
+          {activeView === "vision" && (
+            <div className="view-panel active">
+              <Suspense fallback={<Spinner />}>
+                <VisionView onNavigate={setActiveView} />
               </Suspense>
             </div>
           )}

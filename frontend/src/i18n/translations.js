@@ -235,6 +235,195 @@ export const translations = {
     // WebSocket status
     ws_connected: "Live",
     ws_disconnected: "Offline",
+
+    // ── Vision / Roadmap view ────────────────────────────────
+    viewVision: "Vision",
+
+    vision_hero_badge: "Vision & Roadmap",
+    vision_hero_title: "A Three-Layer Closed-Loop System for the Taklimakan Desert",
+    vision_hero_sub: "Satellites watch the land. AI decides what to do. Robots and people go and do it. Then we watch again, decide again, do again.",
+    vision_hero_cta_map: "Explore the live map",
+
+    vision_layers_title: "The Three Layers",
+    vision_layers_desc: "Sense, decide, act — and back again. Each layer feeds the next, and observations from the field flow back to satellite ground-truthing.",
+    vision_layer_now: "Today",
+    vision_layer_next: "Coming next",
+    vision_loop_aria: "Closed-loop diagram: L1 Sense flows to L3 Decide, L3 flows to L2 Act, and L2 feeds back to L1.",
+
+    vision_l1_title: "Sense — Eyes from Space",
+    vision_l1_status: "50% built",
+    vision_l1_desc: "Satellite and remote-sensing data describe what is happening across 337,000 km² of desert at 10m resolution. We measure NDVI weekly and flag every patch that drifts off baseline.",
+    vision_l1_now: "Sentinel-2 NDVI (Google Earth Engine), 225 monitoring points across the perimeter.",
+    vision_l1_next: "ERA5 weather, SRTM terrain, SMAP soil moisture, GRACE groundwater, Three-North historical baseline, species suitability maps.",
+
+    vision_l3_title: "Decide — Action Engine",
+    vision_l3_status: "In build",
+    vision_l3_desc: "L3 is the brain: it reads L1 data and emits a finite, citable action — what to plant, when to irrigate, who to send. Every recommendation lands as a project office form, not a free-form blob.",
+    vision_l3_now: "17-action vocabulary spec drafted with 70 references; rule-based engine starting Q3.",
+    vision_l3_next: "ML confidence scoring, multi-action sequencing, integration with Three-North project office workflows.",
+
+    vision_l2_title: "Act — Boots and Bots",
+    vision_l2_status: "Concept",
+    vision_l2_desc: "L2 is what physically touches the ground: snake robot for visual inspection, drones for area surveys, humans for planting, drip valves for irrigation. Most actions stay human-driven by design.",
+    vision_l2_now: "Snake robot prototype (Mar–Aug 2026), human field expedition planned summer 2026.",
+    vision_l2_next: "Drone partnerships with regional forestry bureaus, drip-irrigation SCADA hooks, soil-sampling end-effector.",
+
+    vision_phases_title: "Autonomy Roadmap",
+    vision_phases_desc: "The system gets more autonomous in three steps. We earn each step with deployment data. Some actions never go full auto — by policy, not by capability.",
+    vision_phase_currentBadge: "We are here",
+    vision_phase_canDo: "We can",
+    vision_phase_wontDo: "We won't",
+
+    vision_phaseA_title: "Recommend",
+    vision_phaseA_window: "0 – 12 months · Today",
+    vision_phaseA_desc: "L3 outputs reports. Humans make every decision. Zero automation, zero legal exposure.",
+    vision_phaseA_can: "Generate site-specific planting and irrigation reports a project-office engineer can take straight to a forestry bureau filing.",
+    vision_phaseA_wont: "Send any command to a robot or open any irrigation valve without a person clicking it.",
+
+    vision_phaseB_title: "Semi-autonomous",
+    vision_phaseB_window: "12 – 30 months",
+    vision_phaseB_desc: "L3 issues commands to L2. A human reviews and approves before execution. Routine drip-irrigation pulses are the first to close.",
+    vision_phaseB_can: "Auto-schedule drip-irrigation cycles, dispatch the snake robot to inspect a flagged patch, queue drone surveys.",
+    vision_phaseB_wont: "Auto-execute any planting decision or any flood/eco-water release. Both stay human-approved end to end.",
+
+    vision_phaseC_title: "Closed loop",
+    vision_phaseC_window: "30+ months",
+    vision_phaseC_desc: "L3 ↔ L2 run a continuous loop for the action classes that have proven safe through Phase B. Humans audit, not gate.",
+    vision_phaseC_can: "Fully autonomous irrigation pulse / skip cycles, autonomous routine inspection rounds, auto-triggered alert response playbooks.",
+    vision_phaseC_wont: "Auto-execute planting or eco-water releases. These remain human-approved forever, by policy.",
+
+    vision_alwaysHuman_title: "Always Human — by policy",
+    vision_alwaysHuman_desc: "Planting decisions and ecological water releases never go full auto. Both are large, slow, irreversible, and tangled with land rights and downstream impact. Software recommends; an authorized human signs.",
+
+    vision_personas_title: "Who We Build For",
+    vision_personas_desc: "Three users, served in order. Phase A is built for User A. We earn the right to expand by serving User A well first.",
+    vision_persona_pain: "Pain",
+    vision_persona_help: "How we help",
+    vision_persona_coverage: "Coverage today",
+
+    vision_personaA_name: "Three-North Project Office Engineer",
+    vision_personaA_tag: "B2G · 12–18 month contracts · Primary",
+    vision_personaA_pain: "Annual planting quotas to hit, 3-year survival rates to defend at audit, no real-time view of what's actually happening across thousands of hectares.",
+    vision_personaA_help: "Every L3 recommendation lands with planting density, species, irrigation cost, approval level, and citations — drop-in for a project filing.",
+    vision_personaA_coverage: "Active focus",
+
+    vision_personaB_name: "Forestry Research Institute Scientist",
+    vision_personaB_tag: "Subscription · Phase 2",
+    vision_personaB_pain: "Need long-baseline NDVI, weather, and soil moisture stitched together; institutional data pipelines are slow and siloed.",
+    vision_personaB_help: "Open API for time series across the perimeter, custom region queries, exportable datasets for publications.",
+    vision_personaB_coverage: "Read-only data access",
+
+    vision_personaC_name: "Public + Donors",
+    vision_personaC_tag: "Free · Phase 3",
+    vision_personaC_pain: "Care about the desert, can't tell a press release from real progress, no way to see what their donation actually does.",
+    vision_personaC_help: "Live map, before/after sliders, donor-funded plot tracking. The story shown by data, not adjectives.",
+    vision_personaC_coverage: "Live map and storytelling",
+
+    vision_actions_title: "17-Action Vocabulary",
+    vision_actions_desc: "L3's output is a finite, auditable set — not free-form text. Every action has a trigger, parameters, cost, and approval level. Click a category to expand.",
+    vision_actionsPlant_title: "Planting recommendations",
+    vision_actionsPlant_count: "6 actions",
+    vision_actionsWater_title: "Water management",
+    vision_actionsWater_count: "4 actions",
+    vision_actionsInspect_title: "Inspection dispatch",
+    vision_actionsInspect_count: "4 actions",
+    vision_actionsAlert_title: "Risk alerts",
+    vision_actionsAlert_count: "3 actions",
+    vision_action_trigger: "Trigger",
+    vision_action_output: "Output",
+    vision_action_approval: "Approval",
+    vision_actions_note_prefix: "Full spec with 70 citations:",
+
+    vision_action_haloxylon_name: "Haloxylon — saxaul shrub",
+    vision_action_haloxylon_trigger: "NDVI < 0.15 for 3 years; rainfall 50–150mm/yr; mobile or semi-fixed dunes; below 1500m.",
+    vision_action_haloxylon_output: "600–1100 plants/ha, 4×4m spacing, 30–50cm bare-root saplings, plant April 10–25, 3–4kg watering at planting.",
+    vision_action_haloxylon_approval: "Project office (<1000 mu); Autonomous Region Forestry Bureau (>1000 mu).",
+
+    vision_action_tamarix_name: "Tamarix — salt cedar",
+    vision_action_tamarix_trigger: "NDVI < 0.20 for 3 years; soil salinity 0.5–2%; groundwater 2–10m; riparian or low-lying saline ground.",
+    vision_action_tamarix_output: "1670–3300 plants/mu, 1-yr cuttings or 2-yr bare-root 50–80cm, 5–8kg planting water, 26-day drip cycle.",
+    vision_action_tamarix_approval: "Project office filing → Prefecture forestry bureau.",
+
+    vision_action_calligonum_name: "Calligonum — sand sorrel",
+    vision_action_calligonum_trigger: "NDVI < 0.15 on bare or semi-fixed dunes; coarse sand or gravelly desert; no groundwater requirement.",
+    vision_action_calligonum_output: "~3000 plants/ha, direct-seed at 2cm depth or 1–2yr saplings, plant in April when dunes are moist, no drip needed.",
+    vision_action_calligonum_approval: "Local execution (<500 mu); project office (>500 mu).",
+
+    vision_action_populus_name: "Populus — Euphrates poplar",
+    vision_action_populus_trigger: "Tarim River corridor only; groundwater shallower than 5m; NDVI declining >0.05 for 2 years; upstream eco-water available.",
+    vision_action_populus_output: "Three sub-actions: trigger natural regeneration via flood release, coppice old stands, or plant 80–120cm container seedlings at 3×4m.",
+    vision_action_populus_approval: "Autonomous Region Forestry Bureau + Water Resources Bureau (always).",
+
+    vision_action_hedysarum_name: "Hedysarum — sweetvetch",
+    vision_action_hedysarum_trigger: "NDVI < 0.15; can survive 40cm dry surface layer; northeast Taklimakan or transition zones.",
+    vision_action_hedysarum_output: "2500–4000 plants/ha, 30–50cm 1-yr saplings, plant early-mid April, often mixed with caragana and artemisia.",
+    vision_action_hedysarum_approval: "Project office filing → Prefecture forestry bureau.",
+
+    vision_action_mixed_name: "Mixed community planting",
+    vision_action_mixed_trigger: ">500 ha contiguous areas with heterogeneous soil; NDVI <0.20 region-wide with spatial variation in moisture/salinity.",
+    vision_action_mixed_output: "Dune top: Calligonum. Dune mid: Haloxylon. Dune base: Tamarix. Reference mix: 50/30/15/5%.",
+    vision_action_mixed_approval: "Autonomous Region Forestry Bureau (typically >1000 mu).",
+
+    vision_action_drip_name: "Drip pulse",
+    vision_action_drip_trigger: "SMAP soil moisture below threshold; ERA5 forecasts no rainfall >5mm in 14 days; growing season; drip network in place.",
+    vision_action_drip_output: "11.5–23 L/plant for adults, 5–10 L for saplings, 26-day rotation, brackish water up to 4.8 g/L acceptable.",
+    vision_action_drip_approval: "Local irrigation manager (routine); project office (emergency).",
+
+    vision_action_flood_name: "Ecological water release",
+    vision_action_flood_trigger: "Tarim River poplar zone NDVI declining 2+ years; groundwater wells reading >5m; upstream water available, July–Sept window.",
+    vision_action_flood_output: "Annual target ≥350 million m³, 3-year rotation, downstream 800km channel + flood plain.",
+    vision_action_flood_approval: "Autonomous Region Water + Forestry Bureau, cross-prefecture coordination.",
+
+    vision_action_gwcaution_name: "Groundwater caution",
+    vision_action_gwcaution_trigger: "Monitoring wells dropping >1m/yr for 3 years; NDVI degradation within 5km radius; oasis tail-end zones.",
+    vision_action_gwcaution_output: "Policy recommendation, not a planting action: pause new well permits, propose extraction caps, replace groundwater with surface water + drip.",
+    vision_action_gwcaution_approval: "Provincial Water + Forestry + Agriculture bureaus (joint).",
+
+    vision_action_skip_name: "Skip irrigation cycle",
+    vision_action_skip_trigger: "ERA5 forecasts >10mm rain in 7 days; SMAP shows soil already saturated; not in critical growth window.",
+    vision_action_skip_output: "Skip this cycle, re-evaluate in 26 days. Saves ~23–50 m³/ha.",
+    vision_action_skip_approval: "Local irrigation manager (auto).",
+
+    vision_action_human_name: "Human inspection",
+    vision_action_human_trigger: "Anomaly area >50 ha; need species-level judgment; boundary disputes; sandstorm or cold-snap warning periods.",
+    vision_action_human_output: "2–4 person team, GPS + soil sampler + camera + portable NDVI; 1–3 days per 100 km², report within 7 days.",
+    vision_action_human_approval: "Project office dispatch.",
+
+    vision_action_snake_name: "Snake robot inspection",
+    vision_action_snake_trigger: "Anomaly area <5 ha; flat or gentle slope (<30°); need close visual confirm; need to enter straw checkerboards or dense brush.",
+    vision_action_snake_output: "RGB + NIR imaging, 0–5cm + 20cm soil sampling, IR thermometry; <500m radius, 0.05–0.3 m/s on sand.",
+    vision_action_snake_approval: "Project office filing (routine); Forestry Bureau (first deployment).",
+
+    vision_action_drone_name: "Drone inspection",
+    vision_action_drone_trigger: "Area 5–1000 ha; wind <8 m/s; visibility >5km; need higher resolution than Sentinel-2 10m.",
+    vision_action_drone_output: "Multirotor for <50 ha, fixed-wing for >50 ha; 100–300m altitude; 30–45min or 2–3hr endurance.",
+    vision_action_drone_approval: "Local execution (routine); ATC notification (>120m or >30min flights).",
+
+    vision_action_scheduled_name: "Scheduled routine inspection",
+    vision_action_scheduled_trigger: "Time since last inspection exceeds seasonal threshold (30/14/30/60 days for spring/summer/fall/winter); priority-monitored zone.",
+    vision_action_scheduled_output: "Spawns INSPECT_HUMAN or INSPECT_DRONE sub-task by area size; monthly inspection report.",
+    vision_action_scheduled_approval: "Auto-scheduled, local execution.",
+
+    vision_action_dust_name: "Dust storm alert",
+    vision_action_dust_trigger: "24–72hr forecast: wind >17 m/s + visibility <1km; spring season; <1yr seedlings present.",
+    vision_action_dust_output: "Pause robot/drone ops, pause irrigation, reinforce checkerboards, post-storm survival inspection within 7 days.",
+    vision_action_dust_approval: "Auto-trigger, notify local + project office.",
+
+    vision_action_heat_name: "Heat wave alert",
+    vision_action_heat_trigger: "7-day forecast >40°C for 3+ days; <2yr seedlings present; SMAP soil moisture below critical threshold.",
+    vision_action_heat_output: "Increase drip frequency to 7–14 day cycles, suspend ground ops 11:00–17:00.",
+    vision_action_heat_approval: "Project office filing, local execution.",
+
+    vision_action_ndvi_name: "NDVI degradation alert",
+    vision_action_ndvi_trigger: "YoY decline >0.05 (season-matched); absolute NDVI <0.15 sustained 6 months; vs. 5-year baseline.",
+    vision_action_ndvi_output: "Watch level: queue inspection. Warning: human + snake confirm in 7 days. Emergency: trigger irrigation playbook.",
+    vision_action_ndvi_approval: "Watch: local. Warning: project office. Emergency: Forestry Bureau.",
+
+    vision_why_title: "Why This Matters",
+    vision_why_body: "Satellites alone tell us what's wrong but not what to do about it. Robots and humans alone work blind across 337,000 km². L3 is the joint that makes sensing useful: it turns a 10-meter pixel of NDVI decline into a project office form with species, density, cost, and citations. Without L3, the loop never closes.",
+    vision_why_cta: "Explore the live map",
+
+    vision_footer: "Vision & Roadmap · Guarding the Green Wall · 2026",
   },
   zh: {
     appTitle: "塔克拉玛干沙漠监测",
@@ -472,5 +661,194 @@ export const translations = {
     // WebSocket status
     ws_connected: "在线",
     ws_disconnected: "离线",
+
+    // ── Vision / Roadmap view ────────────────────────────────
+    viewVision: "愿景",
+
+    vision_hero_badge: "愿景与路线图",
+    vision_hero_title: "塔克拉玛干沙漠的 3 层闭环治沙系统",
+    vision_hero_sub: "卫星看地。AI 决定该做什么。机器人和人去做。然后再看，再决定，再做。",
+    vision_hero_cta_map: "查看实时地图",
+
+    vision_layers_title: "三层架构",
+    vision_layers_desc: "感知、决策、执行——再回到感知。每一层为下一层供数据，地面观测又回灌给卫星做地真校准。",
+    vision_layer_now: "现在",
+    vision_layer_next: "即将增加",
+    vision_loop_aria: "闭环示意图：L1 感知 → L3 决策 → L2 执行 → L1 感知",
+
+    vision_l1_title: "感知 — 太空之眼",
+    vision_l1_status: "已完成 50%",
+    vision_l1_desc: "卫星与遥感数据描述 33.7 万平方公里沙漠的真实状态，分辨率 10 米。每周计算一次 NDVI，对偏离基线的区域做异常标记。",
+    vision_l1_now: "Sentinel-2 NDVI（基于 Google Earth Engine），覆盖 225 个监测点。",
+    vision_l1_next: "ERA5 气象、SRTM 地形、SMAP 土壤湿度、GRACE 地下水、三北工程历史数据、物种适宜性图。",
+
+    vision_l3_title: "决策 — 行动引擎",
+    vision_l3_status: "建设中",
+    vision_l3_desc: "L3 是大脑：读取 L1 数据，输出有限的、可引用的 action——种什么、何时灌、派谁。每条建议都能直接落到项目立项书里，不是自由文本。",
+    vision_l3_now: "17 个 action 词典已起草，70 条引用支撑；规则引擎 Q3 启动。",
+    vision_l3_next: "ML 置信度评分、多 action 编排、与三北项目办流程对接。",
+
+    vision_l2_title: "执行 — 人和机器",
+    vision_l2_status: "概念阶段",
+    vision_l2_desc: "L2 是真正接触地面的：蛇形机器人做近距离巡检，无人机做大面积测绘，人做种植，滴灌阀做灌溉。大部分 action 按设计永远由人执行。",
+    vision_l2_now: "蛇形机器人原型（2026 年 3-8 月）；2026 年夏季实地考察。",
+    vision_l2_next: "与地州林业局合作的无人机服务、滴灌 SCADA 接入、土壤采样末端执行器。",
+
+    vision_phases_title: "自主度路线图",
+    vision_phases_desc: "系统分三档逐步升级。每一档都用部署数据换来。有些 action 永远不会全自动——是政策决定，不是技术做不到。",
+    vision_phase_currentBadge: "当前所在",
+    vision_phase_canDo: "能做",
+    vision_phase_wontDo: "不会做",
+
+    vision_phaseA_title: "推荐",
+    vision_phaseA_window: "0–12 个月 · 当前",
+    vision_phaseA_desc: "L3 输出报告。所有决策由人做。零自动化，零法律暴露。",
+    vision_phaseA_can: "生成可直接送进林业局立项的种植和灌溉报告，参数齐全到地块、密度、苗木规格、成本、引用。",
+    vision_phaseA_wont: "不会向任何机器人下命令，不会自动开关任何灌溉阀。",
+
+    vision_phaseB_title: "半自动",
+    vision_phaseB_window: "12–30 个月",
+    vision_phaseB_desc: "L3 向 L2 下命令，由人审批后执行。常规滴灌脉冲是第一批闭环的。",
+    vision_phaseB_can: "自动排定滴灌周期、调度蛇形机器人去复核异常区、安排无人机航测。",
+    vision_phaseB_wont: "不会自动执行任何种植决定，不会自动放生态输水。这两类永远要人审批。",
+
+    vision_phaseC_title: "全闭环",
+    vision_phaseC_window: "30 个月以上",
+    vision_phaseC_desc: "对于 Phase B 已经验证安全的 action 类别，L3 ↔ L2 持续循环。人做审计，不做闸门。",
+    vision_phaseC_can: "全自主滴灌脉冲与跳过周期、自主常规巡检、告警自动触发响应预案。",
+    vision_phaseC_wont: "永不自动执行种植或生态输水。这两类按政策永远由人决定。",
+
+    vision_alwaysHuman_title: "永远由人决定 — 是政策不是能力",
+    vision_alwaysHuman_desc: "种植决策和生态输水永不全自动化。两者规模大、周期长、不可逆，且涉及土地权属和下游影响。系统给建议，由授权的人签字。",
+
+    vision_personas_title: "我们为谁服务",
+    vision_personas_desc: "三类用户，按顺序服务。Phase A 为用户 A 服务。把用户 A 服务好，才有资格扩展到 B 和 C。",
+    vision_persona_pain: "痛点",
+    vision_persona_help: "我们怎么帮",
+    vision_persona_coverage: "当前覆盖度",
+
+    vision_personaA_name: "三北防护林项目办工程师",
+    vision_personaA_tag: "B2G · 12-18 个月签约 · 主要服务对象",
+    vision_personaA_pain: "年度造林任务面积要完成、3 年成活率要过验收、几千公顷的真实状况却看不见。",
+    vision_personaA_help: "L3 每条建议自带种植密度、树种、灌溉成本、审批层级和引用——直接进项目立项书。",
+    vision_personaA_coverage: "重点服务中",
+
+    vision_personaB_name: "林科院 / 治沙所研究员",
+    vision_personaB_tag: "订阅模式 · 第二阶段",
+    vision_personaB_pain: "需要长基线 NDVI、气象、土壤湿度的拼接数据；机构数据管道慢且分散。",
+    vision_personaB_help: "开放 API 提供周边时序数据、自定义区域查询、可导出数据集供发表。",
+    vision_personaB_coverage: "只读数据接入",
+
+    vision_personaC_name: "公众与捐款人",
+    vision_personaC_tag: "免费 · 第三阶段",
+    vision_personaC_pain: "关心沙漠但分不清新闻稿和真实进展，捐了款也不知道做了什么。",
+    vision_personaC_help: "实时地图、前后对比滑块、捐款种树地块跟踪。用数据讲故事，不用形容词。",
+    vision_personaC_coverage: "实时地图与可视化",
+
+    vision_actions_title: "17 个 Action 词典",
+    vision_actions_desc: "L3 的输出是有限的、可审计的集合，不是自由文本。每个 action 都有触发条件、参数、成本、审批层级。点击分类展开。",
+    vision_actionsPlant_title: "种植建议",
+    vision_actionsPlant_count: "6 个",
+    vision_actionsWater_title: "灌溉与水资源",
+    vision_actionsWater_count: "4 个",
+    vision_actionsInspect_title: "巡检派遣",
+    vision_actionsInspect_count: "4 个",
+    vision_actionsAlert_title: "风险预警",
+    vision_actionsAlert_count: "3 个",
+    vision_action_trigger: "触发条件",
+    vision_action_output: "输出参数",
+    vision_action_approval: "审批层级",
+    vision_actions_note_prefix: "完整规格 + 70 条引用：",
+
+    vision_action_haloxylon_name: "推荐种植梭梭",
+    vision_action_haloxylon_trigger: "NDVI 持续 3 年 < 0.15；年降水 50-150mm；流动或半固定沙丘；海拔 < 1500m。",
+    vision_action_haloxylon_output: "600-1100 株/hm²，4×4m 株行距，30-50cm 裸根苗，4 月 10-25 日，每穴 3-4kg 定根水。",
+    vision_action_haloxylon_approval: "项目办立项（< 1000 亩）/ 自治区林草局（> 1000 亩）。",
+
+    vision_action_tamarix_name: "推荐种植红柳",
+    vision_action_tamarix_trigger: "NDVI < 0.20 持续 3 年；土壤含盐 0.5-2%；地下水 2-10m；河岸或低洼盐碱地。",
+    vision_action_tamarix_output: "1670-3300 株/亩，1 年生扦插或 2 年裸根 50-80cm，每穴 5-8kg 定根水，26 天滴灌轮灌。",
+    vision_action_tamarix_approval: "项目办立项 → 地州林业局。",
+
+    vision_action_calligonum_name: "推荐种植沙拐枣",
+    vision_action_calligonum_trigger: "NDVI < 0.15，流沙或半固定沙丘；粗沙或沙砾质；不需地下水可达。",
+    vision_action_calligonum_output: "约 3000 株/hm²，2cm 直播或 1-2 年生苗，4 月沙丘湿润时种，无需滴灌。",
+    vision_action_calligonum_approval: "基层执行（< 500 亩）/ 项目办（> 500 亩）。",
+
+    vision_action_populus_name: "推荐种植 / 抚育胡杨",
+    vision_action_populus_trigger: "仅塔里木河沿线；地下水 < 5m；NDVI 连续 2 年下降 > 0.05；上游有可调度生态输水。",
+    vision_action_populus_output: "三类子 action：生态输水诱发更新、老龄平茬复壮、新河漫滩 80-120cm 容器苗 3×4m 新植。",
+    vision_action_populus_approval: "自治区林草局 + 水利厅（任何规模）。",
+
+    vision_action_hedysarum_name: "推荐种植花棒",
+    vision_action_hedysarum_trigger: "NDVI < 0.15;可耐 40cm 干沙层；塔克拉玛干东北缘或过渡带。",
+    vision_action_hedysarum_output: "2500-4000 株/hm²，30-50cm 1 年生苗，4 月初-中旬，常与柠条油蒿混交。",
+    vision_action_hedysarum_approval: "项目办立项 → 地州林业局。",
+
+    vision_action_mixed_name: "混交群落配置",
+    vision_action_mixed_trigger: "区域 > 500 hm²；土壤异质（沙丘/低洼/盐碱）；NDVI 全域 < 0.20 但有空间变异。",
+    vision_action_mixed_output: "沙丘顶：沙拐枣；中部：梭梭；底部：红柳。参考比例 50/30/15/5%。",
+    vision_action_mixed_approval: "自治区林草局（通常 > 1000 亩）。",
+
+    vision_action_drip_name: "启动滴灌",
+    vision_action_drip_trigger: "SMAP 土壤湿度低于阈值；ERA5 预报 14 天内降水 < 5mm；4-9 月生长季；已铺设滴灌网。",
+    vision_action_drip_output: "成树 11.5-23 升/株，幼苗 5-10 升，26 天轮灌，微咸水矿化度 4.8 g/L 以内可用。",
+    vision_action_drip_approval: "基层灌溉管理员（常规）/ 项目办（应急）。",
+
+    vision_action_flood_name: "生态输水",
+    vision_action_flood_trigger: "塔里木河沿线胡杨林 NDVI 连续 2 年下降；地下水井 > 5m；上游有水可调，7-9 月窗口。",
+    vision_action_flood_output: "年输水目标 ≥ 3.5 亿 m³，三年一轮灌，下游 800km 河道 + 漫淹区。",
+    vision_action_flood_approval: "自治区水利厅 + 林草局，跨地州协调。",
+
+    vision_action_gwcaution_name: "限制地下水开采",
+    vision_action_gwcaution_trigger: "监测井连续 3 年下降 > 1m/年；周边 5km 内 NDVI 退化；内陆河尾闾绿洲。",
+    vision_action_gwcaution_output: "政策建议（非种植）：暂停新井审批、限额开采、用地表水 + 节水滴灌替代。",
+    vision_action_gwcaution_approval: "省级水利厅 + 林草局 + 农业厅联合。",
+
+    vision_action_skip_name: "跳过本轮灌溉",
+    vision_action_skip_trigger: "ERA5 预报 7 天降水 > 10mm；SMAP 土壤已饱和；非关键生长期。",
+    vision_action_skip_output: "本轮跳过，26 天后重新评估。节水约 23-50 m³/hm²。",
+    vision_action_skip_approval: "基层自动执行。",
+
+    vision_action_human_name: "人工巡检",
+    vision_action_human_trigger: "异常区域 > 50 hm²；需要做树种判断；边界纠纷；沙尘暴或寒潮预警期间。",
+    vision_action_human_output: "2-4 人，GPS + 土壤采样器 + 相机 + 便携 NDVI 仪；100km² 用 1-3 天，7 天内交报告。",
+    vision_action_human_approval: "项目办调度。",
+
+    vision_action_snake_name: "蛇形机器人巡检",
+    vision_action_snake_trigger: "异常区域 < 5 hm²；平地或缓坡（< 30°）；需近距离目视确认；需钻入草方格或灌丛底部。",
+    vision_action_snake_output: "RGB + NIR 拍摄，0-5cm + 20cm 土壤采样，红外测温；半径 < 500m，沙地速度 0.05-0.3 m/s。",
+    vision_action_snake_approval: "项目办备案（常规）/ 林业局批复（首次试点）。",
+
+    vision_action_drone_name: "无人机巡检",
+    vision_action_drone_trigger: "区域 5-1000 hm²；风速 < 8 m/s；能见度 > 5km；需高于 Sentinel-2 10m 分辨率。",
+    vision_action_drone_output: "< 50 hm² 多旋翼，> 50 hm² 固定翼；100-300m 高度；续航 30-45min 或 2-3hr。",
+    vision_action_drone_approval: "基层执行（常规）/ 空管报备（> 120m 或 > 30min）。",
+
+    vision_action_scheduled_name: "排期常规巡检",
+    vision_action_scheduled_trigger: "距上次巡检超过季节阈值（春 30 / 夏 14 / 秋 30 / 冬 60 天）；标记为重点监测区。",
+    vision_action_scheduled_output: "按地块大小派 INSPECT_HUMAN 或 INSPECT_DRONE 子任务；月度巡检报告。",
+    vision_action_scheduled_approval: "自动排期，基层执行。",
+
+    vision_action_dust_name: "沙尘暴预警",
+    vision_action_dust_trigger: "未来 24-72 小时风速 > 17 m/s + 能见度 < 1km；春季；区域内有 < 1 年生幼苗。",
+    vision_action_dust_output: "暂停机器人/无人机作业、暂停灌溉、加固草方格、过后 7 天内派人评估幼苗沙埋死亡率。",
+    vision_action_dust_approval: "自动触发，基层 + 项目办同步通知。",
+
+    vision_action_heat_name: "热浪预警",
+    vision_action_heat_trigger: "未来 7 天气温 > 40°C 持续 ≥ 3 天；区域内有 < 2 年生幼苗；SMAP 土壤湿度低于关键阈值。",
+    vision_action_heat_output: "应急滴灌频率提到 7-14 天/次；11:00-17:00 暂停地面作业。",
+    vision_action_heat_approval: "项目办备案，基层执行。",
+
+    vision_action_ndvi_name: "NDVI 异常退化预警",
+    vision_action_ndvi_trigger: "同比下降 > 0.05（季节匹配）；绝对值 < 0.15 持续 6 个月；与 5 年基线对比。",
+    vision_action_ndvi_output: "关注级排期巡检；警告级 7 天内人工 + 蛇形机器人确认；应急级触发灌溉应急方案。",
+    vision_action_ndvi_approval: "关注级基层 / 警告级项目办 / 应急级林业局。",
+
+    vision_why_title: "为什么这一层重要",
+    vision_why_body: "光有卫星只能看到哪里出了问题，不能告诉你怎么办。光有机器人和人，在 33.7 万平方公里上是盲做。L3 是把感知变成有用东西的关节：它把一个 10 米像素的 NDVI 下降，变成一份带树种、密度、成本、引用的项目办填报单。没有 L3，闭环永远闭不上。",
+    vision_why_cta: "查看实时地图",
+
+    vision_footer: "愿景与路线图 · 守护绿色长城 · 2026",
   },
 };
