@@ -1,24 +1,59 @@
 import { useLanguage } from "../i18n/LanguageContext";
-import { FiMap, FiActivity, FiFolder, FiClock, FiHome, FiGift, FiGlobe, FiFileText, FiSun, FiCompass, FiTarget, FiInbox } from "react-icons/fi";
+import {
+  FiMap, FiActivity, FiFolder, FiClock, FiHome, FiGift, FiGlobe,
+  FiFileText, FiSun, FiCompass, FiTarget, FiInbox,
+} from "react-icons/fi";
 import SnakeIcon from "./icons/SnakeIcon";
 import "./Sidebar.css";
 
-const MAIN_VIEWS = [
-  { id: "home", icon: FiHome, labelKey: "viewHome" },
-  { id: "vision", icon: FiTarget, labelKey: "viewVision" },
-  { id: "map", icon: FiMap, labelKey: "viewMap" },
-  { id: "decisions", icon: FiInbox, labelKey: "viewDecisions" },
-  { id: "monitor", icon: FiActivity, labelKey: "viewMonitor" },
-  { id: "projects", icon: FiFolder, labelKey: "viewProjects" },
-  { id: "research", icon: FiCompass, labelKey: "viewResearch" },
-  { id: "playground", icon: FiGlobe, labelKey: "viewPlayground" },
-  { id: "snake", icon: SnakeIcon, labelKey: "viewSnake" },
-];
-
-const SECONDARY_VIEWS = [
-  { id: "donate", icon: FiGift, labelKey: "viewDonate" },
-  { id: "timeline", icon: FiClock, labelKey: "viewTimeline" },
-  { id: "news", icon: FiFileText, labelKey: "viewNews" },
+/* ─────────────────────────────────────────────────────────────────
+ * IA grouping (Phase 5b): 5 sections aligned to the closed-loop
+ * narrative — Story / Sense (L1) / Decide (L3) / Act (L2) / Support.
+ * Order matters; each group's items render under a small heading.
+ * ───────────────────────────────────────────────────────────────── */
+const GROUPS = [
+  {
+    id: "story",
+    labelKey: "groupStory",
+    items: [
+      { id: "home", icon: FiHome, labelKey: "viewHome" },
+      { id: "vision", icon: FiTarget, labelKey: "viewVision" },
+      { id: "news", icon: FiFileText, labelKey: "viewNews" },
+    ],
+  },
+  {
+    id: "sense",
+    labelKey: "groupSense",
+    items: [
+      { id: "map", icon: FiMap, labelKey: "viewMap" },
+      { id: "monitor", icon: FiActivity, labelKey: "viewMonitor" },
+      { id: "timeline", icon: FiClock, labelKey: "viewTimeline" },
+      { id: "playground", icon: FiGlobe, labelKey: "viewPlayground" },
+    ],
+  },
+  {
+    id: "decide",
+    labelKey: "groupDecide",
+    items: [
+      { id: "decisions", icon: FiInbox, labelKey: "viewDecisions" },
+      { id: "projects", icon: FiFolder, labelKey: "viewProjects" },
+    ],
+  },
+  {
+    id: "act",
+    labelKey: "groupAct",
+    items: [
+      { id: "snake", icon: SnakeIcon, labelKey: "viewSnake" },
+      { id: "research", icon: FiCompass, labelKey: "viewResearch" },
+    ],
+  },
+  {
+    id: "support",
+    labelKey: "groupSupport",
+    items: [
+      { id: "donate", icon: FiGift, labelKey: "viewDonate" },
+    ],
+  },
 ];
 
 export default function Sidebar({ activeView, onViewChange }) {
@@ -45,10 +80,18 @@ export default function Sidebar({ activeView, onViewChange }) {
       <div className="sidebar-brand">
         <FiSun size={16} />
       </div>
-      <span className="sidebar-label">{t("sidebarMain")}</span>
-      {MAIN_VIEWS.map(renderButton)}
-      <span className="sidebar-label">{t("sidebarMore")}</span>
-      {SECONDARY_VIEWS.map(renderButton)}
+      {GROUPS.map((g) => (
+        <div key={g.id} className={`sidebar-group sidebar-group-${g.id}`}>
+          <span
+            className="sidebar-group-label"
+            role="presentation"
+            aria-hidden="true"
+          >
+            {t(g.labelKey)}
+          </span>
+          {g.items.map(renderButton)}
+        </div>
+      ))}
       <div className="sidebar-spacer" />
     </nav>
   );
