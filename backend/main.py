@@ -28,17 +28,19 @@ structlog.configure(
     cache_logger_on_first_use=True,
 )
 
-from fastapi import FastAPI, Request
+from fastapi import Depends, FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from rate_limit import limiter
 from middleware import RequestLoggingMiddleware
-from database import init_db
+from database import get_db, init_db
 from routers.analysis import router as analysis_router
 from routers.features import router as features_router
 from routers.dashboard_routes import router as dashboard_router
@@ -112,6 +114,16 @@ app.include_router(auth_router)
 app.include_router(alerts_router)
 app.include_router(donations_router)
 app.include_router(ws_router)
+
+
+# Health check — must be defined BEFORE the static-file mount, otherwise the
+# StaticFiles mount at "/" swallows everything and /healthz returns 404.
+@app.get("/healthz")
+async def healthz(db: AsyncSession = Depends(get_db)):
+    """Liveness/readiness probe; also exercises the DB connection."""
+    await db.execute(text("SELECT 1"))
+    return {"ok": True}
+
 
 # Serve built frontend in production
 STATIC_DIR = Path(__file__).parent / "static"
