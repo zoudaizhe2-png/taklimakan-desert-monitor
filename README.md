@@ -4,7 +4,7 @@
 Real-time satellite monitoring of vegetation along the Taklimakan Desert greenbelt using Google Earth Engine + Sentinel-2 data.
 
 ## Live Site
-*Live deployment in progress*
+**[taklamakangreenwall.org](https://taklamakangreenwall.org/)** — frontend live on Cloudflare. Backend API deployment in progress (Railway).
 
 ## Quick Start
 
