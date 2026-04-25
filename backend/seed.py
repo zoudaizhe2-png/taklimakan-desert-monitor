@@ -1,15 +1,21 @@
-"""Seed database with hardcoded features and news articles."""
+"""Seed database with hardcoded features, news articles, and demo recommendations."""
 
 import asyncio
 import json
+from datetime import datetime, timedelta
+
+from sqlalchemy import func as sa_func, select
+
 from database import engine, async_session, init_db
 from models.feature import Feature
 from models.news import NewsArticle
+from models.recommendation import Recommendation
+from services.action_vocabulary import ACTIONS
 from services.features_service import FEATURES
 
 NEWS_ARTICLES = [
     {"id": 1, "date": "2024-11-11", "title_en": "Taklimakan Desert Fully Enclosed by Green Belt for the First Time", "title_zh": "塔克拉玛干沙漠实现绿色锁边合龙", "desc_en": "A 3,046-km green belt around the Taklimakan Desert has been completed, closing the final gap in the southern perimeter after decades of afforestation work.", "desc_zh": "环绕塔克拉玛干沙漠的3046公里绿色屏障全线合龙，数十年治沙造林工程画上圆满句号。", "source": "Xinhua", "source_url": "https://english.news.cn/20241111/b2fe3a1b52a04c0e9e0d073a43d4fa5b/c.html", "category": "greenbelt"},
-    {"id": 2, "date": "2024-11-12", "title_en": "China Completes 'Green Necklace' Around World's Second-Largest Desert", "title_zh": "中国在世界第二大沙漠周围建成\u201c绿色项链\u201d", "desc_en": "Reuters reports the completion of a continuous belt of vegetation encircling the Taklimakan, calling it one of the most ambitious ecological engineering projects in history.", "desc_zh": "路透社报道塔克拉玛干沙漠连续植被带闭合，称其为人类历史上最宏伟的生态工程之一。", "source": "Reuters", "source_url": "https://www.reuters.com/world/china/china-completes-green-necklace-around-taklimakan-desert-2024-11-12/", "category": "greenbelt"},
+    {"id": 2, "date": "2024-11-12", "title_en": "China Completes 'Green Necklace' Around World's Second-Largest Desert", "title_zh": "中国在世界第二大沙漠周围建成“绿色项链”", "desc_en": "Reuters reports the completion of a continuous belt of vegetation encircling the Taklimakan, calling it one of the most ambitious ecological engineering projects in history.", "desc_zh": "路透社报道塔克拉玛干沙漠连续植被带闭合，称其为人类历史上最宏伟的生态工程之一。", "source": "Reuters", "source_url": "https://www.reuters.com/world/china/china-completes-green-necklace-around-taklimakan-desert-2024-11-12/", "category": "greenbelt"},
     {"id": 3, "date": "2024-08-28", "title_en": "China Pledges $8 Billion for New Phase of Three-North Shelterbelt Program", "title_zh": "中国投入约580亿元推进三北防护林新阶段", "desc_en": "Beijing announces a massive new investment phase for the Three-North Shelterbelt Program, targeting desertification control in Xinjiang, Inner Mongolia, and Gansu.", "desc_zh": "北京宣布三北防护林工程新一轮大规模投资，重点推进新疆、内蒙古和甘肃的荒漠化治理。", "source": "CGTN", "source_url": "https://news.cgtn.com/news/2024-08-28/China-s-Three-North-program/index.html", "category": "policy"},
     {"id": 4, "date": "2023-06-17", "title_en": "Aksu Kekeya Greening Project Reaches 130 km², Wins UN Environmental Award", "title_zh": "阿克苏柯柯牙工程达130平方公里，荣获联合国环境奖", "desc_en": "After 37 years, Aksu's Kekeya project has turned barren gobi into 130 km² of productive forest, earning recognition from the United Nations Environment Programme.", "desc_zh": "历经37年，阿克苏柯柯牙将荒漠戈壁变为130平方公里的生产性森林，获联合国环境规划署表彰。", "source": "Xinhua", "source_url": "https://www.xinhuanet.com/english/2023-06/17/c_1310727.htm", "category": "kekeya"},
     {"id": 5, "date": "2023-09-20", "title_en": "Desert Highway Shelterbelt Thrives 20 Years After Completion", "title_zh": "沙漠公路防护林建成20年后依然茂盛", "desc_en": "Two decades after the 436-km green corridor along the Tarim Desert Highway was completed, the shelterbelt continues to thrive, sustained by drip irrigation and groundwater wells.", "desc_zh": "塔里木沙漠公路436公里绿色走廊建成20年后，依靠滴灌和地下水井持续茂盛生长。", "source": "People's Daily", "source_url": "http://en.people.cn/n3/2023/0920/c90000-20073438.html", "category": "greenbelt"},
@@ -24,6 +30,165 @@ NEWS_ARTICLES = [
     {"id": 14, "date": "2024-03-12", "title_en": "China Marks National Tree-Planting Day with Desert Focus", "title_zh": "中国植树节聚焦沙漠治理", "desc_en": "On National Tree-Planting Day, China highlights Taklimakan green belt progress as a model for large-scale ecological restoration.", "desc_zh": "在全国植树节，中国将塔克拉玛干绿化带进展作为大规模生态修复典范。", "source": "China Daily", "source_url": "https://www.chinadaily.com.cn/a/202403/12/WS65f02f9ba31082fc043ba.html", "category": "greenbelt"},
     {"id": 15, "date": "2021-06-05", "title_en": "Solar-Powered Drip Irrigation Sustains Desert Highway Shelterbelt", "title_zh": "太阳能滴灌维护沙漠公路防护林", "desc_en": "A network of solar-powered pumping stations along the Desert Highway draws brackish groundwater for drip irrigation.", "desc_zh": "沙漠公路沿线太阳能泵站网络抽取微咸地下水进行滴灌。", "source": "Xinhua", "source_url": "https://www.xinhuanet.com/english/2021-06/05/c_139991.htm", "category": "technology"},
 ]
+
+
+def _demo_recommendations() -> list[dict]:
+    """8 demo recommendations spanning all 4 categories and 5 status values.
+
+    Frontend Decision Center needs at least one row per status to cover all UI
+    branches. These are realistic-looking but synthetic — generated once at seed
+    time so the demo flow stays stable.
+    """
+    now = datetime.utcnow()
+    return [
+        # 1. PLANT_HALOXYLON — pending, project_office approval, mid confidence
+        {
+            "action_code": "PLANT_HALOXYLON",
+            "feature_id": "hotan_green_belt",
+            "trigger_data_snapshot": {
+                "ndvi": 0.12, "annual_rainfall_mm": 80, "soil_type": "sandy",
+                "elevation_m": 1300, "ndvi_low_years": 4,
+            },
+            "output_params": {
+                **ACTIONS["PLANT_HALOXYLON"].output_params_schema,
+                "region_area_hm2": 245.0,
+            },
+            "confidence": 0.78,
+            "estimated_cost_yuan": 245.0 * 15000.0,
+            "eta_months": 36,
+            "approval_level": "project_office",
+            "status": "pending",
+            "engine_note": None,
+            "created_at": now - timedelta(hours=2),
+        },
+        # 2. ALERT_NDVI_DEGRADATION — approved (decided)
+        {
+            "action_code": "ALERT_NDVI_DEGRADATION",
+            "feature_id": "alar_shelterbelt",
+            "trigger_data_snapshot": {
+                "ndvi": 0.13, "ndvi_drop": 0.11, "ndvi_drop_periods": 4, "ndvi_low_months": 7,
+            },
+            "output_params": ACTIONS["ALERT_NDVI_DEGRADATION"].output_params_schema,
+            "confidence": 0.82,
+            "estimated_cost_yuan": None,
+            "eta_months": 0,
+            "approval_level": "local",
+            "status": "approved",
+            "engine_note": None,
+            "created_at": now - timedelta(days=1),
+            "decided_at": now - timedelta(hours=18),
+            "decision_notes": "Confirmed via Sentinel-2 review; dispatched drone survey.",
+        },
+        # 3. INSPECT_SNAKE_ROBOT — rejected (sandstorm forecast)
+        {
+            "action_code": "INSPECT_SNAKE_ROBOT",
+            "feature_id": None,
+            "region_geojson": {
+                "type": "Polygon",
+                "coordinates": [[[80.10, 37.00], [80.12, 37.00], [80.12, 37.02], [80.10, 37.02], [80.10, 37.00]]],
+            },
+            "trigger_data_snapshot": {"ndvi": 0.08, "ndvi_drop": 0.18, "terrain": "sand_dune", "slope_degrees": 22},
+            "output_params": ACTIONS["INSPECT_SNAKE_ROBOT"].output_params_schema,
+            "confidence": 0.55,
+            "estimated_cost_yuan": None,
+            "eta_months": 0,
+            "approval_level": "project_office",
+            "status": "rejected",
+            "engine_note": None,
+            "created_at": now - timedelta(days=2),
+            "decided_at": now - timedelta(days=1, hours=12),
+            "decision_notes": "Sandstorm forecast for next 72h — defer until visibility >5km.",
+        },
+        # 4. IRRIGATION_DRIP_PULSE — deferred
+        {
+            "action_code": "IRRIGATION_DRIP_PULSE",
+            "feature_id": "korla_oasis_edge",
+            "trigger_data_snapshot": {
+                "soil_moisture_pct": 4.2, "forecast_rainfall_mm_14d": 2,
+                "is_growth_season": True, "has_drip": True,
+            },
+            "output_params": ACTIONS["IRRIGATION_DRIP_PULSE"].output_params_schema,
+            "confidence": 0.85,
+            "estimated_cost_yuan": 32.0 * 550.0,
+            "eta_months": 0,
+            "approval_level": "local",
+            "status": "deferred",
+            "engine_note": None,
+            "created_at": now - timedelta(hours=12),
+            "decided_at": now - timedelta(hours=4),
+            "decision_notes": "Defer 48h — pump station maintenance in progress.",
+        },
+        # 5. PLANT_TAMARIX — pending, awaiting L1 data (low confidence)
+        {
+            "action_code": "PLANT_TAMARIX",
+            "feature_id": None,
+            "region_geojson": {
+                "type": "Polygon",
+                "coordinates": [[[81.0, 40.5], [81.05, 40.5], [81.05, 40.55], [81.0, 40.55], [81.0, 40.5]]],
+            },
+            "trigger_data_snapshot": {"ndvi": 0.16, "ndvi_low_years": 3},
+            "output_params": ACTIONS["PLANT_TAMARIX"].output_params_schema,
+            "confidence": 0.18,
+            "estimated_cost_yuan": 18.5 * 22500.0,
+            "eta_months": 12,
+            "approval_level": "project_office",
+            "status": "pending",
+            "engine_note": "awaiting L1 expansion: soil_moisture, groundwater_depth",
+            "created_at": now - timedelta(hours=6),
+        },
+        # 6. ALERT_DUST_STORM — executed (warning issued + ops paused)
+        {
+            "action_code": "ALERT_DUST_STORM",
+            "feature_id": None,
+            "region_geojson": None,
+            "trigger_data_snapshot": {
+                "forecast_wind_m_per_s": 22, "forecast_visibility_km": 0.6,
+                "season": "apr", "has_young_seedlings": True,
+            },
+            "output_params": ACTIONS["ALERT_DUST_STORM"].output_params_schema,
+            "confidence": 0.88,
+            "estimated_cost_yuan": None,
+            "eta_months": 0,
+            "approval_level": "local",
+            "status": "executed",
+            "engine_note": None,
+            "created_at": now - timedelta(days=3),
+            "decided_at": now - timedelta(days=3),
+            "decision_notes": "Warning broadcast; drip + drone ops paused 72h; checkerboards reinforced.",
+        },
+        # 7. INSPECT_DRONE — pending, mid area
+        {
+            "action_code": "INSPECT_DRONE",
+            "feature_id": None,
+            "region_geojson": {
+                "type": "Polygon",
+                "coordinates": [[[85.8, 41.7], [85.85, 41.7], [85.85, 41.75], [85.8, 41.75], [85.8, 41.7]]],
+            },
+            "trigger_data_snapshot": {"ndvi": 0.18, "forecast_wind_m_per_s": 5, "forecast_visibility_km": 12},
+            "output_params": ACTIONS["INSPECT_DRONE"].output_params_schema,
+            "confidence": 0.81,
+            "estimated_cost_yuan": None,
+            "eta_months": 0,
+            "approval_level": "local",
+            "status": "pending",
+            "engine_note": None,
+            "created_at": now - timedelta(hours=4),
+        },
+        # 8. INSPECT_SCHEDULED — expired (past deadline, never actioned)
+        {
+            "action_code": "INSPECT_SCHEDULED",
+            "feature_id": "hotan_green_belt",
+            "trigger_data_snapshot": {"days_since_last_inspection": 95, "is_priority_zone": True},
+            "output_params": ACTIONS["INSPECT_SCHEDULED"].output_params_schema,
+            "confidence": 0.90,
+            "estimated_cost_yuan": None,
+            "eta_months": 0,
+            "approval_level": "local",
+            "status": "expired",
+            "engine_note": None,
+            "created_at": now - timedelta(days=45),
+        },
+    ]
 
 
 async def seed():
@@ -61,9 +226,37 @@ async def seed():
             )
             await session.merge(article)
 
+        # Seed demo recommendations only if table is empty (idempotent re-runs).
+        existing = await session.execute(select(sa_func.count()).select_from(Recommendation))
+        rec_count = existing.scalar_one()
+        seeded_recs = 0
+        if rec_count == 0:
+            for r in _demo_recommendations():
+                rec = Recommendation(
+                    action_code=r["action_code"],
+                    feature_id=r.get("feature_id"),
+                    region_geojson=json.dumps(r["region_geojson"]) if r.get("region_geojson") else None,
+                    trigger_data_snapshot=json.dumps(r["trigger_data_snapshot"]),
+                    output_params=json.dumps(r["output_params"]),
+                    confidence=r["confidence"],
+                    estimated_cost_yuan=r.get("estimated_cost_yuan"),
+                    eta_months=r.get("eta_months"),
+                    approval_level=r["approval_level"],
+                    status=r["status"],
+                    engine_note=r.get("engine_note"),
+                    created_at=r["created_at"],
+                    decided_at=r.get("decided_at"),
+                    decision_notes=r.get("decision_notes"),
+                )
+                session.add(rec)
+                seeded_recs += 1
+
         await session.commit()
 
-    print(f"Seeded {len(FEATURES)} features and {len(NEWS_ARTICLES)} news articles.")
+    print(
+        f"Seeded {len(FEATURES)} features, {len(NEWS_ARTICLES)} news articles, "
+        f"and {seeded_recs} recommendations (existing rows: {rec_count})."
+    )
 
 
 if __name__ == "__main__":

@@ -49,6 +49,7 @@ from routers.auth import router as auth_router
 from routers.alerts import router as alerts_router
 from routers.donations import router as donations_router
 from routers.sense import router as sense_router
+from routers.recommendations import router as recommendations_router
 from routers.ws import router as ws_router
 from websocket import heartbeat_loop
 
@@ -116,6 +117,7 @@ app.include_router(auth_router)
 app.include_router(alerts_router)
 app.include_router(donations_router)
 app.include_router(sense_router)
+app.include_router(recommendations_router)
 app.include_router(ws_router)
 
 
