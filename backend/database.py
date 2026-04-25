@@ -1,10 +1,22 @@
-"""Async SQLite database setup via SQLAlchemy 2.0."""
+"""Async database setup via SQLAlchemy 2.0. Supports SQLite (dev) and Postgres (Railway add-on)."""
 
 import os
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
 
-DB_PATH = os.environ.get("DATABASE_URL", "sqlite+aiosqlite:///./desert_tracker.db")
+
+def _normalize_db_url(url: str) -> str:
+    """Coerce sync-style Postgres URLs (Railway/Heroku) to asyncpg driver."""
+    if url.startswith("postgres://"):
+        return "postgresql+asyncpg://" + url[len("postgres://"):]
+    if url.startswith("postgresql://") and "+asyncpg" not in url:
+        return "postgresql+asyncpg://" + url[len("postgresql://"):]
+    return url
+
+
+DB_PATH = _normalize_db_url(
+    os.environ.get("DATABASE_URL", "sqlite+aiosqlite:///./desert_tracker.db")
+)
 
 engine = create_async_engine(DB_PATH, echo=False)
 async_session = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)

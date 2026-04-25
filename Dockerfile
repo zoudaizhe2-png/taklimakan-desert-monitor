@@ -22,9 +22,10 @@ RUN cd /app/frontend && npx vite build && \
     rm -rf /app/backend/static && \
     cp -r /app/frontend/dist /app/backend/static
 
-RUN adduser --disabled-password --gecos "" appuser
+RUN adduser --disabled-password --gecos "" appuser && \
+    chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 8000
-HEALTHCHECK --interval=30s --timeout=5s CMD curl -f http://localhost:8000/api/data-source || exit 1
+HEALTHCHECK --interval=30s --timeout=5s --start-period=40s CMD curl -f http://localhost:8000/healthz || exit 1
 ENTRYPOINT ["/bin/bash", "/app/start.sh"]
