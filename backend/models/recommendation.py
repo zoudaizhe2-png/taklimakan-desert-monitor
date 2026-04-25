@@ -6,6 +6,11 @@ from sqlalchemy import Column, DateTime, Float, ForeignKey, Integer, String, Tex
 
 from database import Base
 
+# Import dependencies so SQLAlchemy resolves FK targets even when this model
+# is loaded via a router (before init_db's import block runs).
+from models import feature as _feature  # noqa: F401  -- registers `features` table
+from models import user as _user        # noqa: F401  -- registers `users` table
+
 
 # Allowed status values; status column itself is a String for SQLite portability.
 STATUSES = ("pending", "approved", "rejected", "deferred", "executed", "expired")
