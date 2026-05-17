@@ -206,7 +206,7 @@ export const translations = {
     viewMonitor: "Monitor",
     viewHome: "Home",
     viewSnake: "Snake Robot",
-    viewDonate: "Donate",
+    viewDonate: "Partner Inquiry",
     viewPlayground: "Satellite Lab",
     viewResearch: "Ground Research",
     // Year slider milestones
@@ -298,6 +298,8 @@ export const translations = {
     dc_loading: "Loading recommendations...",
     dc_empty_title: "No recommendations match",
     dc_empty_desc: "Try adjusting filters, or re-evaluate the region for fresh suggestions.",
+    dc_fallback_title: "Showing bundled demo data",
+    dc_fallback_desc: "Backend is unreachable — these 8 recommendations are served from the frontend bundle so the demo stays walkable.",
 
     dc_card_confidence: "Confidence",
     dc_card_cost: "Estimated cost",
@@ -435,6 +437,8 @@ export const translations = {
     vision_action_output: "Output",
     vision_action_approval: "Approval",
     vision_actions_note_prefix: "Full spec with 70 citations:",
+    vision_action_awaiting_badge: "v2 · awaiting data",
+    vision_action_awaiting_tip: "Trigger depends on data sources not yet integrated (groundwater depth, vegetation community maps, or species suitability). Available in v2.",
 
     vision_action_haloxylon_name: "Haloxylon — saxaul shrub",
     vision_action_haloxylon_trigger: "NDVI < 0.15 for 3 years; rainfall 50–150mm/yr; mobile or semi-fixed dunes; below 1500m.",
@@ -711,7 +715,7 @@ export const translations = {
     viewMonitor: "监测",
     viewHome: "首页",
     viewSnake: "蛇形机器人",
-    viewDonate: "捐赠",
+    viewDonate: "申请试点",
     viewPlayground: "\u536B\u661F\u5B9E\u9A8C\u5BA4",
     viewResearch: "\u5B9E\u5730\u7814\u7A76",
     // IA 分组 (Phase 5b)
@@ -826,6 +830,8 @@ export const translations = {
     dc_loading: "加载推荐中...",
     dc_empty_title: "暂无匹配推荐",
     dc_empty_desc: "试试调整 filter，或重新评估区域获取新建议。",
+    dc_fallback_title: "正在显示离线 demo 数据",
+    dc_fallback_desc: "后端暂不可达 —— 当前 8 条推荐由前端 bundle 提供，保证 demo 可走完整流程。",
 
     dc_card_confidence: "置信度",
     dc_card_cost: "预估成本",
@@ -963,6 +969,8 @@ export const translations = {
     vision_action_output: "输出参数",
     vision_action_approval: "审批层级",
     vision_actions_note_prefix: "完整规格 + 70 条引用：",
+    vision_action_awaiting_badge: "v2 · 待接数据",
+    vision_action_awaiting_tip: "触发条件依赖尚未接入的数据源（地下水深度、植被群落地图、物种适宜性），v2 版本将支持。",
 
     vision_action_haloxylon_name: "推荐种植梭梭",
     vision_action_haloxylon_trigger: "NDVI 持续 3 年 < 0.15；年降水 50-150mm；流动或半固定沙丘；海拔 < 1500m。",

@@ -59,24 +59,40 @@ export default function MissionView({ onNavigate }) {
         <div className="mission-hero-inner">
           <div className="mission-hero-badge">
             <FiGlobe size={14} />
-            {isZh ? "\u975E\u8425\u5229\u8BA1\u5212" : "Nonprofit Initiative"}
+            {isZh ? "\u4E09\u5317\u9632\u62A4\u6797\u00B7\u51B3\u7B56\u5DE5\u5177" : "Three-North Shelterbelt \u00B7 Decision Tooling"}
           </div>
           <h1 className="mission-hero-title">
-            {isZh ? "\u5B88\u62A4\u7EFF\u8272\u957F\u57CE" : "Guarding the Green Wall"}
+            {isZh ? "\u4E09\u5317\u9632\u62A4\u6797\u76D1\u6D4B\u51B3\u7B56\u7CFB\u7EDF" : "Three-North Shelterbelt Decision System"}
           </h1>
           <p className="mission-hero-subtitle">
             {isZh
-              ? "\u76D1\u6D4B\u4E16\u754C\u6700\u5927\u6C99\u6F20\u7EFF\u5316\u5DE5\u7A0B\u7684\u8FDB\u5C55\u3002\u5229\u7528\u536B\u661F\u3001\u673A\u5668\u4EBA\u548C\u5B9E\u5730\u7814\u7A76\u3002"
-              : "Monitoring the world's largest desert greening effort through satellites, robotics, and field research."}
+              ? "\u4E3A\u4E09\u5317\u9632\u62A4\u6797\u9879\u76EE\u529E\u6253\u9020\u7684\u51B3\u7B56\u8F85\u52A9\u5DE5\u5177\uFF1A\u536B\u661F\u9065\u611F + AI \u63A8\u8350 + 17 \u7C7B\u5E72\u9884\u52A8\u4F5C\uFF0C\u5C06\u5DE1\u62A4\u3001\u8865\u690D\u3001\u704C\u6E89\u7684\u5DE5\u4F5C\u91CF\u53D8\u5F97\u53EF\u91CF\u5316\u3001\u53EF\u8FFD\u6EAF\u3002"
+              : "A decision-support stack for Three-North project offices: satellite remote sensing + AI recommendations + a 17-action intervention vocabulary. Patrol, replanting, and irrigation work becomes quantifiable and auditable."}
           </p>
           <div className="mission-hero-cta">
-            <button className="cta-primary" onClick={() => onNavigate?.("monitor")}>
-              {isZh ? "\u67E5\u770B\u76D1\u6D4B" : "Explore Monitor"} <FiArrowRight size={16} />
+            <button className="cta-primary" onClick={() => onNavigate?.("decisions")}>
+              {isZh ? "\u8FDB\u5165\u51B3\u7B56\u4E2D\u5FC3" : "View Decision Center"} <FiArrowRight size={16} />
             </button>
-            <button className="cta-secondary" onClick={() => onNavigate?.("snake")}>
-              {isZh ? "\u4E86\u89E3\u673A\u5668\u4EBA" : "Meet the Robot"} <FiCpu size={14} />
+            <button className="cta-secondary" onClick={() => onNavigate?.("monitor")}>
+              {isZh ? "\u536B\u661F\u76D1\u6D4B" : "Satellite Monitor"} <FiCpu size={14} />
             </button>
           </div>
+
+          {/* Live system CTA \u2014 prominent below Hero CTAs, jumps to Decision Center */}
+          <button
+            type="button"
+            className="mission-hero-live-cta"
+            onClick={() => onNavigate?.("decisions")}
+          >
+            <span className="mission-hero-live-dot" aria-hidden="true" />
+            <span className="mission-hero-live-text">
+              {isZh
+                ? "\u5B9E\u65F6\u7CFB\u7EDF \u2014 8 \u6761\u5F85\u5BA1\u6279\u63A8\u8350"
+                : "Live system \u2014 8 active recommendations"}
+            </span>
+            <span className="mission-hero-live-count" aria-hidden="true">8</span>
+            <FiArrowRight size={14} aria-hidden="true" />
+          </button>
         </div>
         <div className="mission-hero-scroll">
           <FiArrowDown size={18} />

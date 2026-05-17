@@ -90,6 +90,62 @@
   margin-top: 28px;
 }
 
+/* ── Live system CTA (B2G prominence) ── */
+.mission-hero-live-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 18px;
+  padding: 9px 18px 9px 14px;
+  background: rgba(102, 187, 106, 0.08);
+  border: 1px solid rgba(102, 187, 106, 0.35);
+  border-radius: 999px;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.15px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+}
+.mission-hero-live-cta:hover,
+.mission-hero-live-cta:focus-visible {
+  background: rgba(102, 187, 106, 0.14);
+  border-color: var(--accent-green-bright, #66bb6a);
+  transform: translateY(-1px);
+  outline: none;
+}
+.mission-hero-live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent-green-bright, #66bb6a);
+  box-shadow: 0 0 0 0 rgba(102, 187, 106, 0.6);
+  animation: live-pulse 1.8s ease-out infinite;
+  flex-shrink: 0;
+}
+@keyframes live-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(102, 187, 106, 0.55); }
+  70%  { box-shadow: 0 0 0 8px rgba(102, 187, 106, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(102, 187, 106, 0); }
+}
+.mission-hero-live-text {
+  white-space: nowrap;
+}
+.mission-hero-live-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 11px;
+  background: var(--accent-green-bright, #66bb6a);
+  color: #0d1117;
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .cta-primary, .cta-secondary {
   display: inline-flex;
   align-items: center;

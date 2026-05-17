@@ -21,3 +21,6 @@ node_modules/
 .vscode/
 .idea/
 .claude/
+
+# Internal PM scratch (briefs, completion reports, handoffs — not for repo history)
+_pm-prep/
