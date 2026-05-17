@@ -10,6 +10,7 @@ import {
 import { FiTrendingUp, FiTrendingDown, FiAlertTriangle, FiEye, FiGitPullRequest, FiRefreshCw } from "react-icons/fi";
 import useDataCache from "../hooks/useDataCache";
 import { fetchDataSource } from "../api/client";
+import LoadingState from "./states/LoadingState";
 import "./MonitorView.css";
 
 const API = import.meta.env.DEV ? "http://localhost:8000/api" : "/api";
@@ -154,7 +155,7 @@ export default function MonitorView() {
                 </div>
               </div>
             ) : (
-              <div className="mon-stats-loading">{lang === "zh" ? "正在获取卫星数据..." : "Fetching satellite data..."}</div>
+              <LoadingState size="small" message={lang === "zh" ? "正在获取卫星数据..." : "Fetching satellite data..."} />
             )}
           </div>
 
@@ -184,7 +185,7 @@ export default function MonitorView() {
                 </div>
               </div>
             ) : (
-              <div className="mon-stats-loading">{lang === "zh" ? "正在分析变化..." : "Analyzing changes..."}</div>
+              <LoadingState size="small" message={lang === "zh" ? "正在分析变化..." : "Analyzing changes..."} />
             )}
           </div>
 

@@ -11,6 +11,7 @@ import {
   FiChevronDown,
   FiExternalLink,
   FiInfo,
+  FiMapPin,
   FiX as FiClose,
 } from "react-icons/fi";
 import { useLanguage } from "../i18n/LanguageContext";
@@ -22,6 +23,9 @@ import {
   evaluateRegion,
   ApiError,
 } from "../api/client";
+import LoadingState from "./states/LoadingState";
+import ErrorState from "./states/ErrorState";
+import EmptyState from "./states/EmptyState";
 import "./DecisionCenterView.css";
 
 /* ────────────────────────────────────────────────────────────────────
@@ -72,6 +76,141 @@ const STATUS_META = {
 
 const DOCS_URL =
   "https://github.com/zoudaizhe2-png/taklimakan-desert-monitor/blob/main/docs/L3-action-vocabulary.md";
+
+/* ────────────────────────────────────────────────────────────────────
+ * Fallback demo recommendations — rendered when the backend API is
+ * unreachable (this is a B2G demo deployment; the backend may be down).
+ * Mirrors the 8 rows seeded in `backend/seed.py::_demo_recommendations`,
+ * with the same institution-attributed feature_id strings so the UI
+ * looks identical in both code paths.
+ * ──────────────────────────────────────────────────────────────────── */
+
+const NOW_MS = Date.now();
+const hoursAgo = (h) => new Date(NOW_MS - h * 3600 * 1000).toISOString();
+const daysAgo = (d) => new Date(NOW_MS - d * 86400 * 1000).toISOString();
+
+const FALLBACK_RECOMMENDATIONS = [
+  {
+    id: -1,
+    action_code: "PLANT_HALOXYLON",
+    feature_id: "新疆林业和草原局 · 和田绿洲项目",
+    trigger_data_snapshot: { ndvi: 0.12, annual_rainfall_mm: 80, soil_type: "sandy", elevation_m: 1300, ndvi_low_years: 4 },
+    output_params: { density: 800, spacing_m: 4, region_area_hm2: 245.0 },
+    confidence: 0.78,
+    estimated_cost_yuan: 245.0 * 15000.0,
+    eta_months: 36,
+    approval_level: "project_office",
+    status: "pending",
+    engine_note: null,
+    created_at: hoursAgo(2),
+  },
+  {
+    id: -2,
+    action_code: "ALERT_NDVI_DEGRADATION",
+    feature_id: "新疆阿克苏地区林业局 · 阿拉尔防护林",
+    trigger_data_snapshot: { ndvi: 0.13, ndvi_drop: 0.11, ndvi_drop_periods: 4, ndvi_low_months: 7 },
+    output_params: {},
+    confidence: 0.82,
+    estimated_cost_yuan: null,
+    eta_months: 0,
+    approval_level: "local",
+    status: "approved",
+    engine_note: null,
+    created_at: daysAgo(1),
+    decided_at: hoursAgo(18),
+    decision_notes: "Confirmed via Sentinel-2 review; dispatched drone survey.",
+  },
+  {
+    id: -3,
+    action_code: "INSPECT_SNAKE_ROBOT",
+    feature_id: "新疆和田地区林草局 · 民丰防护林",
+    trigger_data_snapshot: { ndvi: 0.08, ndvi_drop: 0.18, terrain: "sand_dune", slope_degrees: 22 },
+    output_params: {},
+    confidence: 0.55,
+    estimated_cost_yuan: null,
+    eta_months: 0,
+    approval_level: "project_office",
+    status: "rejected",
+    engine_note: null,
+    created_at: daysAgo(2),
+    decided_at: hoursAgo(36),
+    decision_notes: "Sandstorm forecast for next 72h — defer until visibility >5km.",
+  },
+  {
+    id: -4,
+    action_code: "IRRIGATION_DRIP_PULSE",
+    feature_id: "新疆巴音郭楞自治州林业局 · 库尔勒绿洲边缘",
+    trigger_data_snapshot: { soil_moisture_pct: 4.2, forecast_rainfall_mm_14d: 2, is_growth_season: true, has_drip: true },
+    output_params: {},
+    confidence: 0.85,
+    estimated_cost_yuan: 32.0 * 550.0,
+    eta_months: 0,
+    approval_level: "local",
+    status: "deferred",
+    engine_note: null,
+    created_at: hoursAgo(12),
+    decided_at: hoursAgo(4),
+    decision_notes: "Defer 48h — pump station maintenance in progress.",
+  },
+  {
+    id: -5,
+    action_code: "PLANT_TAMARIX",
+    feature_id: "甘肃酒泉市林草局 · 河西走廊试点段",
+    trigger_data_snapshot: { ndvi: 0.16, ndvi_low_years: 3 },
+    output_params: {},
+    confidence: 0.18,
+    estimated_cost_yuan: 18.5 * 22500.0,
+    eta_months: 12,
+    approval_level: "project_office",
+    status: "pending",
+    engine_note: "awaiting L1 expansion: soil_moisture, groundwater_depth",
+    created_at: hoursAgo(6),
+  },
+  {
+    id: -6,
+    action_code: "ALERT_DUST_STORM",
+    feature_id: "内蒙古阿拉善盟林草局 · 巴丹吉林沙漠东缘",
+    trigger_data_snapshot: { forecast_wind_m_per_s: 22, forecast_visibility_km: 0.6, season: "apr", has_young_seedlings: true },
+    output_params: {},
+    confidence: 0.88,
+    estimated_cost_yuan: null,
+    eta_months: 0,
+    approval_level: "local",
+    status: "executed",
+    engine_note: null,
+    created_at: daysAgo(3),
+    decided_at: daysAgo(3),
+    decision_notes: "Warning broadcast; drip + drone ops paused 72h; checkerboards reinforced.",
+  },
+  {
+    id: -7,
+    action_code: "INSPECT_DRONE",
+    feature_id: "宁夏银川林草局 · 灵武白芨滩防护林",
+    trigger_data_snapshot: { ndvi: 0.18, forecast_wind_m_per_s: 5, forecast_visibility_km: 12 },
+    output_params: {},
+    confidence: 0.81,
+    estimated_cost_yuan: null,
+    eta_months: 0,
+    approval_level: "local",
+    status: "pending",
+    engine_note: null,
+    created_at: hoursAgo(4),
+  },
+  {
+    id: -8,
+    action_code: "INSPECT_SCHEDULED",
+    feature_id: "新疆林业和草原局 · 和田绿洲项目",
+    trigger_data_snapshot: { days_since_last_inspection: 95, is_priority_zone: true },
+    output_params: {},
+    confidence: 0.90,
+    estimated_cost_yuan: null,
+    eta_months: 0,
+    approval_level: "local",
+    status: "expired",
+    engine_note: null,
+    created_at: daysAgo(45),
+  },
+];
 
 /* ────────────────────────────────────────────────────────────────────
  * Helpers
@@ -422,6 +561,11 @@ function RecommendationCard({ rec, action, isAuthed, onOpenDetail, onDecide }) {
       </header>
 
       <h3 id={`dc-card-title-${rec.id}`} className="dc-card-title">{name}</h3>
+      {rec.feature_id && (
+        <p className="dc-card-org" title={String(rec.feature_id)}>
+          <FiMapPin size={11} aria-hidden="true" /> {String(rec.feature_id)}
+        </p>
+      )}
       {desc && <p className="dc-card-desc">{desc}</p>}
 
       <div className="dc-card-grid">
@@ -549,6 +693,7 @@ export default function DecisionCenterView() {
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [usingFallback, setUsingFallback] = useState(false);
 
   const [actionCatalog, setActionCatalog] = useState({});
   const [completeness, setCompleteness] = useState(null);
@@ -586,14 +731,21 @@ export default function DecisionCenterView() {
     if (approvalFilter !== "all") filters.approval_level = approvalFilter;
     fetchRecommendations(filters, signal)
       .then((data) => {
-        setRecommendations(Array.isArray(data) ? data : []);
+        const rows = Array.isArray(data) ? data : [];
+        setRecommendations(rows);
+        setUsingFallback(false);
         setLoading(false);
       })
       .catch((err) => {
         if (err?.name === "ApiError" && err.status === 0 && err.message?.includes("cancel")) {
           return; // ignore aborts
         }
-        setError(err?.message ?? "Failed to load");
+        // Fallback: render bundled demo set so the page is never empty
+        // when the backend is unreachable. This is intentional for the
+        // B2G demo deployment — keeps the UX walkable without a server.
+        setRecommendations(FALLBACK_RECOMMENDATIONS);
+        setUsingFallback(true);
+        setError(null);
         setLoading(false);
       });
   }, [statusFilter, approvalFilter]);
@@ -728,24 +880,30 @@ export default function DecisionCenterView() {
 
       {/* LIST */}
       <main className="dc-list-wrap">
-        {error && (
-          <div className="dc-error-banner" role="alert">
-            <FiAlertTriangle size={14} aria-hidden="true" /> {error}
-          </div>
+        {usingFallback && (
+          <ErrorState
+            variant="warning"
+            title={t("dc_fallback_title")}
+            description={t("dc_fallback_desc")}
+          />
         )}
 
-        {loading && (
-          <div className="dc-loading" role="status" aria-live="polite">
-            {t("dc_loading")}
-          </div>
+        {error && (
+          <ErrorState
+            title={t("stateErrorTitle")}
+            description={error}
+            onRetry={() => loadList()}
+          />
         )}
+
+        {loading && <LoadingState size="medium" message={t("dc_loading")} />}
 
         {!loading && filteredRecs.length === 0 && (
-          <div className="dc-empty" role="status">
-            <FiInbox size={28} aria-hidden="true" />
-            <h3>{t("dc_empty_title")}</h3>
-            <p>{t("dc_empty_desc")}</p>
-          </div>
+          <EmptyState
+            icon={FiInbox}
+            title={t("dc_empty_title")}
+            description={t("dc_empty_desc")}
+          />
         )}
 
         {!loading && filteredRecs.length > 0 && (

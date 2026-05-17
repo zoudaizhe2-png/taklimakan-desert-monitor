@@ -307,6 +307,20 @@
   line-height: 1.35;
 }
 
+/* Institution attribution — shown under the action title */
+.dc-card-org {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin: 0;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--accent-orange, #ffa726);
+  letter-spacing: 0.1px;
+  line-height: 1.4;
+}
+.dc-card-org svg { color: var(--accent-orange, #ffa726); flex-shrink: 0; }
+
 .dc-card-desc {
   font-size: 12.5px;
   line-height: 1.55;

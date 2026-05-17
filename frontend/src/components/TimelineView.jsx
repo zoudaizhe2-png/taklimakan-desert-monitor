@@ -2,6 +2,8 @@ import { useState, useEffect, useRef, Fragment } from "react";
 import { useLanguage } from "../i18n/LanguageContext";
 import { fetchTimeseries } from "../api/client";
 import { LineChart, Line, XAxis, YAxis, ResponsiveContainer, Tooltip, ReferenceLine } from "recharts";
+import LoadingState from "./states/LoadingState";
+import EmptyState from "./states/EmptyState";
 import "./TimelineView.css";
 
 const HISTORY_MILESTONES = [
@@ -258,9 +260,11 @@ export default function TimelineView({ onNavigateToProject }) {
       <div className="tl2-ndvi-panel">
         <div className="tl2-ndvi-header">
           <h3>{t("tl_ndviTrendTitle")}</h3>
-          <span className="tl2-ndvi-badge">{loadingNdvi ? "Loading..." : "Sentinel-2 NDVI"}</span>
+          <span className="tl2-ndvi-badge">{loadingNdvi ? t("stateLoading") : "Sentinel-2 NDVI"}</span>
         </div>
-        {ndviTrend.length > 0 ? (
+        {loadingNdvi ? (
+          <LoadingState size="medium" />
+        ) : ndviTrend.length > 0 ? (
           <div className="tl2-ndvi-chart">
             <ResponsiveContainer width="100%" height={160}>
               <LineChart data={ndviTrend} margin={{ top: 20, right: 16, bottom: 4, left: 0 }}>
@@ -283,9 +287,9 @@ export default function TimelineView({ onNavigateToProject }) {
               </LineChart>
             </ResponsiveContainer>
           </div>
-        ) : !loadingNdvi ? (
-          <div className="tl2-ndvi-empty">{t("tl_ndviNoData")}</div>
-        ) : null}
+        ) : (
+          <EmptyState title={t("tl_ndviNoData")} description={null} />
+        )}
       </div>
 
       {/* Vertical Timeline */}

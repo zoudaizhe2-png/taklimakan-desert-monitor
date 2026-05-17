@@ -38,10 +38,16 @@ def _demo_recommendations() -> list[dict]:
     Frontend Decision Center needs at least one row per status to cover all UI
     branches. These are realistic-looking but synthetic — generated once at seed
     time so the demo flow stays stable.
+
+    `feature_id` keeps the canonical Feature row slug (FK-enforced); the B2G
+    institution attribution ("新疆林业和草原局 · 和田绿洲项目" etc.) lives in
+    the frontend fallback bundle (DecisionCenterView FALLBACK_RECOMMENDATIONS),
+    which is what the live demo actually renders when the backend is offline.
     """
     now = datetime.utcnow()
     return [
         # 1. PLANT_HALOXYLON — pending, project_office approval, mid confidence
+        # B2G attribution: 新疆林业和草原局 · 和田绿洲项目
         {
             "action_code": "PLANT_HALOXYLON",
             "feature_id": "hotan_green_belt",
@@ -62,6 +68,7 @@ def _demo_recommendations() -> list[dict]:
             "created_at": now - timedelta(hours=2),
         },
         # 2. ALERT_NDVI_DEGRADATION — approved (decided)
+        # B2G attribution: 新疆阿克苏地区林业局 · 阿拉尔防护林
         {
             "action_code": "ALERT_NDVI_DEGRADATION",
             "feature_id": "alar_shelterbelt",
@@ -80,6 +87,7 @@ def _demo_recommendations() -> list[dict]:
             "decision_notes": "Confirmed via Sentinel-2 review; dispatched drone survey.",
         },
         # 3. INSPECT_SNAKE_ROBOT — rejected (sandstorm forecast)
+        # B2G attribution: 新疆和田地区林草局 · 民丰防护林
         {
             "action_code": "INSPECT_SNAKE_ROBOT",
             "feature_id": None,
@@ -100,6 +108,7 @@ def _demo_recommendations() -> list[dict]:
             "decision_notes": "Sandstorm forecast for next 72h — defer until visibility >5km.",
         },
         # 4. IRRIGATION_DRIP_PULSE — deferred
+        # B2G attribution: 新疆巴音郭楞自治州林业局 · 库尔勒绿洲边缘
         {
             "action_code": "IRRIGATION_DRIP_PULSE",
             "feature_id": "korla_oasis_edge",
@@ -119,6 +128,7 @@ def _demo_recommendations() -> list[dict]:
             "decision_notes": "Defer 48h — pump station maintenance in progress.",
         },
         # 5. PLANT_TAMARIX — pending, awaiting L1 data (low confidence)
+        # B2G attribution: 甘肃酒泉市林草局 · 河西走廊试点段
         {
             "action_code": "PLANT_TAMARIX",
             "feature_id": None,
@@ -137,6 +147,7 @@ def _demo_recommendations() -> list[dict]:
             "created_at": now - timedelta(hours=6),
         },
         # 6. ALERT_DUST_STORM — executed (warning issued + ops paused)
+        # B2G attribution: 内蒙古阿拉善盟林草局 · 巴丹吉林沙漠东缘
         {
             "action_code": "ALERT_DUST_STORM",
             "feature_id": None,
@@ -157,6 +168,7 @@ def _demo_recommendations() -> list[dict]:
             "decision_notes": "Warning broadcast; drip + drone ops paused 72h; checkerboards reinforced.",
         },
         # 7. INSPECT_DRONE — pending, mid area
+        # B2G attribution: 宁夏银川林草局 · 灵武白芨滩防护林
         {
             "action_code": "INSPECT_DRONE",
             "feature_id": None,
@@ -175,6 +187,7 @@ def _demo_recommendations() -> list[dict]:
             "created_at": now - timedelta(hours=4),
         },
         # 8. INSPECT_SCHEDULED — expired (past deadline, never actioned)
+        # B2G attribution: 新疆林业和草原局 · 和田绿洲项目
         {
             "action_code": "INSPECT_SCHEDULED",
             "feature_id": "hotan_green_belt",
