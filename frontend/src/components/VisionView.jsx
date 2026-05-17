@@ -128,6 +128,14 @@ const PERSONAS = [
   },
 ];
 
+/*
+ * `awaitingData` marks actions whose trigger conditions depend on L1 data
+ * sources we haven't integrated yet:
+ *   - groundwater depth (Tamarix / Populus / Flood / GW caution)
+ *   - vegetation community / species suitability maps (Mixed community)
+ *   - sub-surface soil profile beyond SMAP top-5cm (Hedysarum)
+ * L1 sources we DO have: SRTM, ERA5, SMAP, Sentinel-2.
+ */
 const ACTION_GROUPS = [
   {
     id: "plant",
@@ -137,11 +145,11 @@ const ACTION_GROUPS = [
     countKey: "vision_actionsPlant_count",
     actions: [
       { code: "PLANT_HALOXYLON", nameKey: "vision_action_haloxylon_name", triggerKey: "vision_action_haloxylon_trigger", outputKey: "vision_action_haloxylon_output", approvalKey: "vision_action_haloxylon_approval" },
-      { code: "PLANT_TAMARIX", nameKey: "vision_action_tamarix_name", triggerKey: "vision_action_tamarix_trigger", outputKey: "vision_action_tamarix_output", approvalKey: "vision_action_tamarix_approval" },
+      { code: "PLANT_TAMARIX", nameKey: "vision_action_tamarix_name", triggerKey: "vision_action_tamarix_trigger", outputKey: "vision_action_tamarix_output", approvalKey: "vision_action_tamarix_approval", awaitingData: true },
       { code: "PLANT_CALLIGONUM", nameKey: "vision_action_calligonum_name", triggerKey: "vision_action_calligonum_trigger", outputKey: "vision_action_calligonum_output", approvalKey: "vision_action_calligonum_approval" },
-      { code: "PLANT_POPULUS", nameKey: "vision_action_populus_name", triggerKey: "vision_action_populus_trigger", outputKey: "vision_action_populus_output", approvalKey: "vision_action_populus_approval" },
-      { code: "PLANT_HEDYSARUM", nameKey: "vision_action_hedysarum_name", triggerKey: "vision_action_hedysarum_trigger", outputKey: "vision_action_hedysarum_output", approvalKey: "vision_action_hedysarum_approval" },
-      { code: "PLANT_MIXED_COMMUNITY", nameKey: "vision_action_mixed_name", triggerKey: "vision_action_mixed_trigger", outputKey: "vision_action_mixed_output", approvalKey: "vision_action_mixed_approval" },
+      { code: "PLANT_POPULUS", nameKey: "vision_action_populus_name", triggerKey: "vision_action_populus_trigger", outputKey: "vision_action_populus_output", approvalKey: "vision_action_populus_approval", awaitingData: true },
+      { code: "PLANT_HEDYSARUM", nameKey: "vision_action_hedysarum_name", triggerKey: "vision_action_hedysarum_trigger", outputKey: "vision_action_hedysarum_output", approvalKey: "vision_action_hedysarum_approval", awaitingData: true },
+      { code: "PLANT_MIXED_COMMUNITY", nameKey: "vision_action_mixed_name", triggerKey: "vision_action_mixed_trigger", outputKey: "vision_action_mixed_output", approvalKey: "vision_action_mixed_approval", awaitingData: true },
     ],
   },
   {
@@ -152,8 +160,8 @@ const ACTION_GROUPS = [
     countKey: "vision_actionsWater_count",
     actions: [
       { code: "IRRIGATION_DRIP_PULSE", nameKey: "vision_action_drip_name", triggerKey: "vision_action_drip_trigger", outputKey: "vision_action_drip_output", approvalKey: "vision_action_drip_approval" },
-      { code: "IRRIGATION_FLOOD_ECOLOGICAL", nameKey: "vision_action_flood_name", triggerKey: "vision_action_flood_trigger", outputKey: "vision_action_flood_output", approvalKey: "vision_action_flood_approval" },
-      { code: "GROUNDWATER_CAUTION", nameKey: "vision_action_gwcaution_name", triggerKey: "vision_action_gwcaution_trigger", outputKey: "vision_action_gwcaution_output", approvalKey: "vision_action_gwcaution_approval" },
+      { code: "IRRIGATION_FLOOD_ECOLOGICAL", nameKey: "vision_action_flood_name", triggerKey: "vision_action_flood_trigger", outputKey: "vision_action_flood_output", approvalKey: "vision_action_flood_approval", awaitingData: true },
+      { code: "GROUNDWATER_CAUTION", nameKey: "vision_action_gwcaution_name", triggerKey: "vision_action_gwcaution_trigger", outputKey: "vision_action_gwcaution_output", approvalKey: "vision_action_gwcaution_approval", awaitingData: true },
       { code: "IRRIGATION_SKIP", nameKey: "vision_action_skip_name", triggerKey: "vision_action_skip_trigger", outputKey: "vision_action_skip_output", approvalKey: "vision_action_skip_approval" },
     ],
   },
@@ -420,6 +428,14 @@ export default function VisionView({ onNavigate }) {
                           >
                             <code className="vision-action-code">{a.code}</code>
                             <span className="vision-action-name">{t(a.nameKey)}</span>
+                            {a.awaitingData && (
+                              <span
+                                className="vision-action-awaiting"
+                                title={t("vision_action_awaiting_tip")}
+                              >
+                                {t("vision_action_awaiting_badge")}
+                              </span>
+                            )}
                             <FiChevronDown className="vision-action-chevron-small" size={14} aria-hidden="true" />
                           </button>
                           {expanded && (

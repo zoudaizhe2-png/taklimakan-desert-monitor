@@ -692,6 +692,22 @@
   color: var(--text-secondary);
 }
 
+/* "v2 · awaiting data" badge — neutral gray, uses CSS custom props for theme */
+.vision-action-awaiting {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.2px;
+  color: var(--text-dim, #6a7a8a);
+  background: var(--bg-secondary, rgba(255, 255, 255, 0.04));
+  border: 1px solid var(--border-secondary, #2a2a4a);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
 .vision-action-chevron-small {
   color: var(--text-dim);
   transition: transform 0.18s ease;
